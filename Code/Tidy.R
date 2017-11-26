@@ -1,0 +1,1 @@
+rawdata<-read.csv("Procrastination.csv", header=TRUE)
