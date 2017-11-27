@@ -3,8 +3,13 @@
 ---
 Created November 27th, 2017
 Analysis Team:  Kevin Dickens & Stephen Merritt
+
+### Contact Information 
 ---
-|Contact Information |
+
+
+### Responsibilities
+---
 | Responsibilities | Analyst |
 | :--------------: | :-----: |
 | Tidying/Cleaning Data | Kevin |
