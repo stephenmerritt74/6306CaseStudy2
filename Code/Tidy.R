@@ -1,10 +1,14 @@
+#Data Ingest and initialization
 rawdata<-read.csv("Procrastination.csv", header=TRUE)
 
+#2a. Output Rows and Columns
 nrow(rawdata)
 ncol(rawdata)
 
+#Assigning to new variable.  This is done to make it easier to go back to clean data without importing again.
 tidydata<-rawdata
 
+#2b.  Renaming columns with meaningful and compressed names.  See codebook for more details.
 colnames(tidydata)<-c("Age", "Gender", "Kids", "Education", "WorkStatus", "AnnIncome", "Occupation","TenureY",
                      "TenureM", "CommSize", "Country", "Marital", "Sons", "Daughters", "DP1", "DP2", "DP3", "DP4", "DP5",
                      "AIP1", "AIP2", "AIP3", "AIP4", "AIP5", "AIP6", "AIP7", "AIP8", "AIP9", "AIP10", "AIP11", "AIP12",
@@ -12,21 +16,33 @@ colnames(tidydata)<-c("Age", "Gender", "Kids", "Education", "WorkStatus", "AnnIn
                      "GP11", "GP12", "GP13", "GP14", "GP15", "GP16", "GP17", "GP18", "GP19", "GP20", "SWLS1", "SWLS2",
                      "SWLS3", "SWLS4", "SWLS5", "SelfP", "OthersP")
 
+#2d A vector is created with appropriate column names to be made into characters.
 char<-c("Gender", "Kids", "Education", "WorkStatus", "Occupation", "CommSize", "Country", "Marital", "Sons", "SelfP", "OthersP")
-tidydata[char] <- sapply(tidydata[char], as.factor)
+tidydata[char] <- sapply(tidydata[char], as.character) #All columns in char are converted to character fields.
 
+#2c-i.  Tenure (Years of service) are rounded to the nearest integer and then converted to integers.  Finally the 999 values are converted to NAs.
 tidydata$TenureY<-round(tidydata$TenureY)
 tidydata$TenureY<-as.integer(tidydata$TenureY)
 tidydata$TenureY[tidydata$TenureY ==999] <- NA
 
+#2-c-i Rounding of Age to remove half-years.
+tidydata$Age<-floor(tidydata$Age)
+
+
+
+#2c-iii.  All entries with Country=0 are replaced with blank (missing) values
 tidydata$Country[tidydata$Country == '0'] <- ""
 
+#2c-ii.  Improperly encoded male and female values are encoded into their proper values as per notes.  Finally the field is converted to an integer.
 tidydata$Sons[tidydata$Sons == 'Male'] <- 1
 tidydata$Sons[tidydata$Sons == 'Female'] <- 2
 tidydata$Sons<-as.integer(tidydata$Sons)
 
-tidydata$Occupation<-trimws(tidydata$Occupation, which=c("left"))
-tidydata$Occupation <- gsub("(?<=^| )([a-z])", "\\U\\1", tolower(tidydata$Occupation), perl = T)
+#2c-iv.  Cleaning up the Occupation variable
+tidydata$Occupation<-trimws(tidydata$Occupation, which=c("left")) #Trim the White space that appears in front of some values.
+tidydata$Occupation <- gsub("(?<=^| )([a-z])", "\\U\\1", tolower(tidydata$Occupation), perl = T) # Converts all entries to lower space and then capitalizes the first letter of each word.
+
+#All nonsense values that are replaced to indicate no response
 tidydata$Occupation[tidydata$Occupation == '0'] <- ""
 tidydata$Occupation[tidydata$Occupation == 'Please Specify'] <- ""
 tidydata$Occupation[tidydata$Occupation == 'Na'] <- ""
@@ -34,6 +50,8 @@ tidydata$Occupation[tidydata$Occupation == 'Ouh'] <- ""
 tidydata$Occupation[tidydata$Occupation == 'Fdsdf'] <- ""
 tidydata$Occupation[tidydata$Occupation == 'Abc'] <- ""
 tidydata$Occupation[tidydata$Occupation == 'S'] <- ""
+
+#Cleaned up the occupation variable to merge several values together, cleanup spelling issues, foreign language responses, abbreviations, etc.
 tidydata$Occupation[grepl("Teacher", tidydata$Occupation, ignore.case=FALSE)] <- "Educator"
 tidydata$Occupation[grepl("Educator", tidydata$Occupation, ignore.case=FALSE)] <- "Educator"
 tidydata$Occupation[grepl("Professor", tidydata$Occupation, ignore.case=FALSE)] <- "Educator"
@@ -67,16 +85,15 @@ tidydata$Occupation[grepl("Gove Service", tidydata$Occupation, ignore.case=FALSE
 tidydata$Occupation[grepl("Government", tidydata$Occupation, ignore.case=FALSE)] <- "Civil Service"
 tidydata$Occupation[grepl("Vidoe", tidydata$Occupation, ignore.case=FALSE)] <- "Video"
 
+#2e. Generation of the mean DP, AIP, GP, and SWLS indices.  Note that na.rm=TRUE is enabled in case NAs exist.
 tidydata$DPMean <- rowMeans(subset(tidydata, select = c(DP1, DP2, DP3, DP4, DP5)), na.rm = TRUE)
 tidydata$AIPMean <- rowMeans(subset(tidydata, select = c(AIP1, AIP2, AIP3, AIP4, AIP5, AIP6, AIP7, AIP8, AIP9, AIP10, AIP11, AIP12, AIP13, AIP14, AIP15)), na.rm = TRUE)
 tidydata$GPMean <- rowMeans(subset(tidydata, select = c(GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8, GP9, GP10, GP11, GP12, GP13, GP14, GP15, GP16, GP17, GP18, GP19, GP20)), na.rm = TRUE)
 tidydata$SWLSMean <- rowMeans(subset(tidydata, select = c(SWLS1, SWLS2, SWLS3, SWLS4, SWLS5)), na.rm = TRUE)
-tidydata$AIPMean<-round(tidydata$AIPMean, digits=0)
+tidydata$AIPMean<-round(tidydata$AIPMean, digits=0) #Due to math calculations the decimal place of AIP is more than the mean columns of the others.  For consistency it is shortned to match the others.
 
+#Diagnostic outputs to generate the number of NA's, summary statistics for the data frame, and verify the structure.
 NATidy<-sapply(tidydata, function(y) sum(length(which(is.na(y)))))
 summary(tidydata)
 str(tidydata)
 NATidy
-
-
-
