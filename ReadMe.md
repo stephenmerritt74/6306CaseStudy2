@@ -6,7 +6,10 @@ Analysis Team:  Kevin Dickens & Stephen Merritt
 
 ### Contact Information 
 ---
-
+| Name | E-mail | Phone |
+| :-----: | :-----: | :-----: |
+| Kevin Dickens | 
+| Stephen Merritt | 
 
 ### Responsibilities
 ---
@@ -17,7 +20,7 @@ Analysis Team:  Kevin Dickens & Stephen Merritt
 | Analysis of Data | Both |
 | Charts & Graphs | Both |
 | Maps | Kevin |
-| Output & Deliverables | Stepehen |
+| Output & Deliverables | Stephen |
 | Presentation | Kevin |
 | Readme | Kevin |
 | Codebook | Both |
@@ -42,7 +45,7 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
-[1] compiler_3.4.2 tools_3.4.2   
+[1] compiler_3.4.2 tools_3.4.2
 
 ## Organization
 ### Folder Organization
