@@ -28,7 +28,8 @@ tidydata$TenureY[tidydata$TenureY ==999] <- NA
 #2-c-i Rounding of Age to remove half-years.
 tidydata$Age<-floor(tidydata$Age)
 
-
+#2-c-i Remove "kids" from the Kids Variable response so the end result is a Yes/No answer.
+tidydata$Kids<-gsub(" Kids", "", tidydata$Kids, fixed=TRUE)
 
 #2c-iii.  All entries with Country=0 are replaced with blank (missing) values
 tidydata$Country[tidydata$Country == '0'] <- ""
@@ -66,9 +67,9 @@ tidydata$Occupation[grepl("Postdoc", tidydata$Occupation, ignore.case=FALSE)] <-
 tidydata$Occupation[grepl("Studey", tidydata$Occupation, ignore.case=FALSE)] <- "Student"
 tidydata$Occupation[grepl("School", tidydata$Occupation, ignore.case=FALSE)] <- "Student"
 tidydata$Occupation[grepl("Nurse", tidydata$Occupation, ignore.case=FALSE)] <- "Nurse"
-tidydata$Occupation[grepl("RN", tidydata$Occupation, ignore.case=FALSE)] <- "Nurse"
-tidydata$Occupation[grepl("LPN", tidydata$Occupation, ignore.case=FALSE)] <- "Nurse"
-tidydata$Occupation[grepl("CRNA", tidydata$Occupation, ignore.case=FALSE)] <- "Nurse"
+tidydata$Occupation[grepl("Rn", tidydata$Occupation, ignore.case=FALSE)] <- "Nurse"
+tidydata$Occupation[grepl("Lpn", tidydata$Occupation, ignore.case=FALSE)] <- "Nurse"
+tidydata$Occupation[grepl("Crna", tidydata$Occupation, ignore.case=FALSE)] <- "Nurse"
 tidydata$Occupation[grepl("Programmer", tidydata$Occupation, ignore.case=FALSE)] <- "Programmer"
 tidydata$Occupation[grepl("Developer", tidydata$Occupation, ignore.case=FALSE)] <- "Programmer"
 tidydata$Occupation[grepl("Engineer", tidydata$Occupation, ignore.case=FALSE)] <- "Engineer"
@@ -78,12 +79,17 @@ tidydata$Occupation[grepl("Sales", tidydata$Occupation, ignore.case=FALSE)] <- "
 tidydata$Occupation[grepl("Mktg", tidydata$Occupation, ignore.case=FALSE)] <- "Marketing"
 tidydata$Occupation[grepl("Supervisor", tidydata$Occupation, ignore.case=FALSE)] <- "Supervisor"
 tidydata$Occupation[grepl("Coordinatore Operativo", tidydata$Occupation, ignore.case=FALSE)] <- "Operational Coordinator"
-tidydata$Occupation[grepl("MD", tidydata$Occupation, ignore.case=FALSE)] <- "Doctor"
-tidydata$Occupation[grepl("VMD", tidydata$Occupation, ignore.case=FALSE)] <- "Veternarian"
+tidydata$Occupation[grepl("Md", tidydata$Occupation, ignore.case=FALSE)] <- "Doctor"
+tidydata$Occupation[grepl("Vmd", tidydata$Occupation, ignore.case=FALSE)] <- "Veternarian"
 tidydata$Occupation[grepl("Psychologis", tidydata$Occupation, ignore.case=FALSE)] <- "Psychologist"
 tidydata$Occupation[grepl("Gove Service", tidydata$Occupation, ignore.case=FALSE)] <- "Civil Service"
 tidydata$Occupation[grepl("Government", tidydata$Occupation, ignore.case=FALSE)] <- "Civil Service"
 tidydata$Occupation[grepl("Vidoe", tidydata$Occupation, ignore.case=FALSE)] <- "Video"
+tidydata$Occupation<-gsub("\\It\\b", "IT", tidydata$Occupation)
+tidydata$Occupation<-gsub("\\Emt\\b", "EMT", tidydata$Occupation)
+tidydata$Occupation<-gsub("\\Ceo\\b", "CEO", tidydata$Occupation)
+tidydata$Occupation<-gsub("\\Cad\\b", "CAD", tidydata$Occupation)
+tidydata$Occupation<-gsub("\\Pca\\b", "PCA", tidydata$Occupation)
 
 #2e. Generation of the mean DP, AIP, GP, and SWLS indices.  Note that na.rm=TRUE is enabled in case NAs exist.
 tidydata$DPMean <- rowMeans(subset(tidydata, select = c(DP1, DP2, DP3, DP4, DP5)), na.rm = TRUE)
