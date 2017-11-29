@@ -8,8 +8,8 @@ Analysis Team:  Kevin Dickens & Stephen Merritt
 ---
 | Name | E-mail | Phone |
 | :-----: | :-----: | :-----: |
-| Kevin Dickens | 
-| Stephen Merritt | 
+| Kevin Dickens | kdickens@smu.edu | |
+| Stephen Merritt | smerritt@smu.edu | |
 
 ### Responsibilities
 ---
@@ -57,13 +57,45 @@ This repo contains the following folders:
 
 ### Files
 ---
-This section will detail the files that appear in this repo and their description.
+This section will detail the files that appear in the repository.
+
+### Root Folder
+---
+The root folder contains necessary administrative and informational files that describe the proposal project the code, processes used, and the data used.
+
+| File Name | Description |
+| :--------------: | :----- |
+| Readme.md | This file that provides the purpose of the project proposal, an overview of the repository, and its contents. |
+| Codebook.md | A file that lists each dataset and describes each variable and steps taken to clean the data. |
 
 ### Code Folder
 ---
+This folder contains all necessary code to complete the tasks described in the proposal.  Files are listed and described below.
+
+| File Name | Description |
+| :--------------: | :----- |
+| Gather1.R | Contains code to scrap human development index data from Wikipedia |
+| Tidy.R | Contains code to clean the Procrastination dataset |
 
 ### Data Folder
 ---
+All data used, gathered, or created as part of this proposal project reside in the Data folder.  Files are listed and described below.
+
+| File Name | Description |
+| :--------------: | :----- |
+| HumanDevelopmentIndex.csv | Comma delimited Human Development Index data scrapped from Wikipedia (see source information below). |
+| Procrastination.csv | Survey responses that contain anonymous responses and indicator variables for procrastination |
 
 ### Presentation Folder
 ---
+Final Presentation data used for the proposal and all deliverables reside in this folder.  Files are listed and described below.
+
+| File Name | Description |
+| :--------------: | :----- |
+| CaseStudy2.RMD | The R Markdown file used to generate the presentation deliverable required by proposal. |
+
+## Sources
+---
+The Human Development Index (HDI) data comes from [Wikipedia](https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries).  This data in turn comes from a United Nations report as indicated on the Wikipedia website and listed below.
+
+1. "Human Development Report 2016 – "Human Development for Everyone"" (PDF). HDRO (Human Development Report Office) United Nations Development Programme. pp. 198–201. Retrieved 2 September 2017.
