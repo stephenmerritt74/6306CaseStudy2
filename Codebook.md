@@ -4,19 +4,25 @@
 ---
 ### Data Selection
 
+#### HDI
+#### DP
+#### GP
+#### AIP
+#### SWLS
 
 ### Variables & Descriptions
 ---
+Below are the variables found in the original data files gathered or scrapped for this proposal project.
 
 #### HumanDevelopmentIndex.csv
 ---
+Data scrapped from Wikipedia and source from the United Nations.
+
 | Variable Number | Original Name | Description |
-| :------------:| :----------: | :----- |
-
-
-#### Procrastination.csv
----
-Below are the variables found in the original data files gathered or scrapped for this proposal project.
+| :-------------: | :-----------: | :---------: |
+| 1 | HDI | Human Developmental Index (Numeric, between 0 and 1). |
+| 2 | Country | Country of observation. |
+| 3 | HumandDev | Description of whether Country exhibits high, medium, or low development. |
 
 ### Procrastination.csv
 ---
