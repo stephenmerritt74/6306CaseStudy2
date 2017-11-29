@@ -1,35 +1,35 @@
 
 ***
-## Codebook for Case Study 2
+# Codebook for Case Study 2
 ---
-### Data Selection
+## Data Selection
 ---
 
-#### HDI
+### HDI
 ---
 Human Development Index (HDI) is a statistics calculated by the United Nations Development Programme from a variety of parameters such as life expectancy, per capita income, and education level.  Since 2010 this measure is typically referred to as IHDI (inequality adjusted Human Development Index).  The calculated statistic results in a percent (so a numeric ranging from 0 to 1) where the lower the number the lower the developmental level of the country observed.  This can be parsed into descriptive text for Very High Development, High Development, Medium Development, and Low Development.  Of note is the absence of data for Greenland.  More information is available [here](https://en.wikipedia.org/wiki/Human_Development_Index).
 
-#### DP
+### DP
 ---
 Decisional Procrastination Scale, or DP, is a scale to measure how students approach decision making processes.  It checks for procrastination, and looks at other avoidance techniques to avoid confounding and confusing elements that may factor into avoidance.  It also look at vigilance of overall decisions.  The questions appearing in this data refer solely to the avoidance-procrastination aspect of the questionnaire which originally measure 31 questions in length.  The scale ranges from 1 to 5 with 1 indicated strongly opposed, and 5 indicating strongly agree.
 
-#### GP
+### GP
 ---
 General Procrastination Scale, or GP, seeks to measure characteristics common to procrastinators via a survey and activity.  The individuals would take the survey to describe their personality and then were given a task to be perofrmed on a specific date, usually mailing an envelope.  This with high indicators of procrastination were more likely to perform the task late. The scale for the questionnaire measures from 1 to 5 with 1 defined as extremely uncharacteristic and 5 extremely characteristic.  These are self-review values as the individual answering the survey is looking at themselves to define a level of behavior.
 
-#### AIP
+### AIP
 ---
 Adult Inventory of Procrastination, or AIP, measures personality and time usage variables and is considered a leading measure for procrastination tendencies.  It measures the chronic tendency to put off tasks in a variety of situations.  The scale ranges from 1 (strongly disagree) to 5 (strongly agree).
 
-#### SWLS
+### SWLS
 ---
 The Satistifaction of Life Scale (SWLS) is a scale to measure global life satisfaction. Scores on the SWLS correlate moderately to highly with other measures of subjective well-being, and correlate predictably with specific personality characteristics. It is noted that the SWLS is Suited for use with different age groups, and other potential uses of the scale are discussed.  It appears here because of the strong correlation between anxiety and stress with procrastination. Each itern is scored from 1 to 7, so the possible range of scores on the questionnaire is from 5 (low satisfaction) to 35 (high satisfaction).
 
-### Variables & Descriptions
+## Variables & Descriptions
 ---
 Below are the variables found in the original data files gathered or scrapped for this proposal project.
 
-#### HumanDevelopmentIndex.csv
+### HumanDevelopmentIndex.csv
 ---
 Data scrapped from Wikipedia and source from the United Nations.
 
@@ -39,7 +39,7 @@ Data scrapped from Wikipedia and source from the United Nations.
 | 2 | Country | Country of observation. |
 | 3 | HumandDev | Description of whether Country exhibits high, medium, or low development. |
 
-### Procrastination.csv
+## Procrastination.csv
 ---
 All variables are responses from survey participants.
 
@@ -107,7 +107,7 @@ All variables are responses from survey participants.
 | 60 | Do you consider yourself a procrastinator? | Participant's self-view of procrastination (Yes/No). |
 | 61 | Do others consider you a procrastinator? | Participant's view of other's perception of their procrastination (Yes/No). |
 
-### Code to obtain tidy data set
+## Code to obtain tidy data set
 ---
 Below is the code used to clean Procrastination.csv.  This code can also be found in Tidy.R.
 
@@ -196,11 +196,11 @@ tidydata$Occupation<-gsub("\\Cad\\b", "CAD", tidydata$Occupation)
 tidydata$Occupation<-gsub("\\Pca\\b", "PCA", tidydata$Occupation)
 ```
 
-### Table of variable names
+## Table of variable names
 ---
 The following are tables that indicate the starting name of a variable and their final names.  This does not include additional variables added during analysis such as MeanDP.
 
-#### Procrastination.csv
+### Procrastination.csv
 ---
 | Variable Number | Original Name | Cleaned Name |
 | :-------------: | :------------:| :----------: |
