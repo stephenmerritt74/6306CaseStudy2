@@ -1,4 +1,5 @@
 library(rvest)
+library(stringr)
 # Question 3
 url <- "https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries"
 webpage <- read_html(url)
@@ -14,6 +15,7 @@ for (i in c(4,5,7,8,10,11,13,14)){
     }
 tbls
 # Used plyr command from dplyr package to convert tbls into a data frame called HDI_df
+
 HDI_df <- (plyr::ldply(tbls))
 # Created 'df2' to combine Country/Territory and Country columns of HDI_df
 df2 <- data.frame(HDI_df = c(HDI_df[,"Country/Territory"], HDI_df[,"Country"]))
@@ -37,6 +39,11 @@ HDI_df2$HDI <- as.numeric(HDI_df2$HDI)
 # the cutoff for Low Human Development, Moldova being the cutoff for Medium Human Development, 
 # Belarus being the cutoff for High Human Development, and Norway being at the very top 
 # for very High Human Development
-HDI_df2$HumandDev<- cut(HDI_df2$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
-levels(HDI_df2$HumandDev) <- c("Low human development", "Medium human development", 
+HDI_df2$HDICategory<- cut(HDI_df2$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
+levels(HDI_df2$HDICategory) <- c("Low human development", "Medium human development", 
                                "High human development", "Very high human development")
+write.csv(HDI_df2, "~/6306DoingDataScience/6306CaseStudy2/Data/HumanDevelopmentIndex.csv", row.names = FALSE)
+# Israel is mispelled as Isreal in the dataset and needs to be replaced prior to merging
+tidydata$Country <- str_replace(tidydata$Country, "Isreal", "Israel")
+tidydata1 <- merge(HDI_df2, tidydata, by = "Country", all = TRUE)
+
