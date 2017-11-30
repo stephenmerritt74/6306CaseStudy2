@@ -74,6 +74,8 @@ This folder contains all necessary code to complete the tasks described in the p
 
 | File Name | Description |
 | :--------------: | :----- |
+| AnalysisK.R | Contains partial code for Question 5 regarding Age vs. Income & AIP of the top 15 countries. |
+| AnalysisS.R | Contains full code for preliminary analysis and partial code for question 5 regarding HDI and SWLS and GP of Top 15 |
 | Gather1.R | Contains code to scrap human development index data from Wikipedia |
 | Tidy.R | Contains code to clean the Procrastination dataset |
 
@@ -85,6 +87,7 @@ All data used, gathered, or created as part of this proposal project reside in t
 | :--------------: | :----- |
 | HumanDevelopmentIndex.csv | Comma delimited Human Development Index data scrapped from Wikipedia (see source information below). |
 | Procrastination.csv | Survey responses that contain anonymous responses and indicator variables for procrastination |
+| tidydata.csv | Cleaned up data from Procrastination.csv.  |
 
 ### Presentation Folder
 ---
