@@ -31,6 +31,9 @@ tidydata$Age<-floor(tidydata$Age)
 #2-c-i Remove "kids" from the Kids Variable response so the end result is a Yes/No answer.
 tidydata$Kids<-gsub(" Kids", "", tidydata$Kids, fixed=TRUE)
 
+#2-c-i Fixed spelling of Isreal to Israel
+tidydata$Country[tidydata$Country == 'Isreal'] <- "Israel"
+
 #2c-iii.  All entries with Country=0 are replaced with blank (missing) values
 tidydata$Country[tidydata$Country == '0'] <- ""
 
@@ -97,6 +100,9 @@ tidydata$AIPMean <- rowMeans(subset(tidydata, select = c(AIP1, AIP2, AIP3, AIP4,
 tidydata$GPMean <- rowMeans(subset(tidydata, select = c(GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8, GP9, GP10, GP11, GP12, GP13, GP14, GP15, GP16, GP17, GP18, GP19, GP20)), na.rm = TRUE)
 tidydata$SWLSMean <- rowMeans(subset(tidydata, select = c(SWLS1, SWLS2, SWLS3, SWLS4, SWLS5)), na.rm = TRUE)
 tidydata$AIPMean<-round(tidydata$AIPMean, digits=0) #Due to math calculations the decimal place of AIP is more than the mean columns of the others.  For consistency it is shortned to match the others.
+
+#3b.  Export tidydata to csv.  Includes HDI.
+write.csv(tidydata, "tidydata.csv")
 
 #Diagnostic outputs to generate the number of NA's, summary statistics for the data frame, and verify the structure.
 NATidy<-sapply(tidydata, function(y) sum(length(which(is.na(y)))))
