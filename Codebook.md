@@ -4,6 +4,9 @@
 ---
 ## Data Selection
 ---
+The data in this project consists of two primary files: Procrastination.csv and HumanDevelopmentIndex.csv.  Procrastination.csv contains 4265 observations of survey participants and captures 61 variables that include demographic data and various procrastination index responses.  HumanDevelopmentIndex.csv contains 191 records with 3 variables that capture the HDI score, category, and the country for whom the score is calculated.  Both tables contain headers.  Procrastination.csv comes from an online survey response while HumanDevelopmentIndex.csv was scrapped manually from Wikipedia.
+
+The procrastination data in-particular required a great deal of cleaning to make it useful for analysis.  Most of teh column names required renaming to remove long names or clarify the intent of the variable.  Several non-sensical responses for various fields were removed entirely and treated as missing values.  The occupation variable field proved especially troublesome as most open text fields end up.  Many "like" occupations were merged together however due to the nature of free text fields there were simply too many unique fields to collapse further without removing meaningful information.  Eventually the two tables are merged together using the Country variable.
 
 ### HDI
 ---
