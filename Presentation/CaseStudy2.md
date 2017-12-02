@@ -229,20 +229,19 @@ write.csv(HDI_df2, "~/6306DoingDataScience/6306CaseStudy2/Data/HumanDevelopmentI
 
 # 3c Merged tidy data of procastiantion.csv to HDI dataframe 
 tidydata1 <- merge(HDI_df2, tidydata, by = "Country", all = TRUE)
-kable(tidydata1[1:5, c(1:3,9,64:67)], caption = "First Five Rows of Tidy Data")
+kable(tidydata1[1:5, c(1:3,9,64:67)], format = "markdown",
+      caption = "First Five Rows of Tidy Data")
 ```
 
 
 
-Table: First Five Rows of Tidy Data
-
-Country          HDI  HDICategory               AnnIncome   DPMean   AIPMean   GPMean   SWLSMean
-------------  ------  -----------------------  ----------  -------  --------  -------  ---------
-Afghanistan    0.479  Low human development         87500      3.2         3      3.2        2.4
-Afghanistan    0.479  Low human development         10000      3.2         3      2.8        1.4
-Afghanistan    0.479  Low human development         10000      3.0         3      3.2        2.8
-Afghanistan    0.479  Low human development        150000      3.6         4      3.7        2.4
-Albania        0.764  High human development        87500      2.4         2      3.0        3.8
+|Country     |   HDI|HDICategory            | AnnIncome| DPMean| AIPMean| GPMean| SWLSMean|
+|:-----------|-----:|:----------------------|---------:|------:|-------:|------:|--------:|
+|Afghanistan | 0.479|Low human development  |     87500|    3.2|       3|    3.2|      2.4|
+|Afghanistan | 0.479|Low human development  |     10000|    3.2|       3|    2.8|      1.4|
+|Afghanistan | 0.479|Low human development  |     10000|    3.0|       3|    3.2|      2.8|
+|Afghanistan | 0.479|Low human development  |    150000|    3.6|       4|    3.7|      2.4|
+|Albania     | 0.764|High human development |     87500|    2.4|       2|    3.0|      3.8|
 
 ## Exploratory Data Analysis
 
@@ -262,7 +261,8 @@ funcsummary <- function(x, property){
     report <- setNames(data.frame(med, IQR, mn, sd, min, max, (max - min)), 
                        c("Median", "IQR", "Mean", "SD", "Min", "Max", "Range"))
     # Digits rounds the output of report to two digits
-    kable(report, digits = 3, caption = paste0("Summary Statisitics for", property, sep = " "))
+    kable(report, digits = 3, format = "markdown", 
+          caption = paste0("Summary Statisitics for ", property, sep = " "))
    
 }
 funcsummary(tidydata18_67, "Age")
@@ -270,11 +270,9 @@ funcsummary(tidydata18_67, "Age")
 
 
 
-Table: Summary Statisitics forAge 
-
- Median   IQR     Mean       SD   Min   Max   Range
--------  ----  -------  -------  ----  ----  ------
-     37    17   37.863   13.298    19    67      48
+| Median| IQR|   Mean|     SD| Min| Max| Range|
+|------:|---:|------:|------:|---:|---:|-----:|
+|     37|  17| 37.863| 13.298|  19|  67|    48|
 
 ```r
 funcsummary(tidydata18_67, "AnnIncome")
@@ -282,11 +280,9 @@ funcsummary(tidydata18_67, "AnnIncome")
 
 
 
-Table: Summary Statisitics forAnnIncome 
-
- Median     IQR       Mean         SD     Min      Max    Range
--------  ------  ---------  ---------  ------  -------  -------
-  45000   72500   59731.65   55174.79   10000   250000   240000
+| Median|   IQR|     Mean|       SD|   Min|    Max|  Range|
+|------:|-----:|--------:|--------:|-----:|------:|------:|
+|  45000| 72500| 59731.65| 55174.79| 10000| 250000| 240000|
 
 ```r
 funcsummary(tidydata18_67, "HDI")
@@ -294,11 +290,9 @@ funcsummary(tidydata18_67, "HDI")
 
 
 
-Table: Summary Statisitics forHDI 
-
- Median   IQR    Mean      SD     Min     Max   Range
--------  ----  ------  ------  ------  ------  ------
-   0.92     0   0.905   0.056   0.479   0.949    0.47
+| Median| IQR|  Mean|    SD|   Min|   Max| Range|
+|------:|---:|-----:|-----:|-----:|-----:|-----:|
+|   0.92|   0| 0.905| 0.056| 0.479| 0.949|  0.47|
 
 ```r
 funcsummary(tidydata18_67, "DPMean")
@@ -306,11 +300,9 @@ funcsummary(tidydata18_67, "DPMean")
 
 
 
-Table: Summary Statisitics forDPMean 
-
- Median   IQR    Mean      SD   Min   Max   Range
--------  ----  ------  ------  ----  ----  ------
-      3   1.4   3.053   0.969     1     5       4
+| Median| IQR|  Mean|    SD| Min| Max| Range|
+|------:|---:|-----:|-----:|---:|---:|-----:|
+|      3| 1.4| 3.053| 0.969|   1|   5|     4|
 
 ```r
 funcsummary(tidydata18_67, "AIPMean")
@@ -318,11 +310,9 @@ funcsummary(tidydata18_67, "AIPMean")
 
 
 
-Table: Summary Statisitics forAIPMean 
-
- Median   IQR    Mean      SD   Min   Max   Range
--------  ----  ------  ------  ----  ----  ------
-      3     2   2.972   0.854     1     5       4
+| Median| IQR|  Mean|    SD| Min| Max| Range|
+|------:|---:|-----:|-----:|---:|---:|-----:|
+|      3|   2| 2.972| 0.854|   1|   5|     4|
 
 ```r
 funcsummary(tidydata18_67, "GPMean")
@@ -330,11 +320,9 @@ funcsummary(tidydata18_67, "GPMean")
 
 
 
-Table: Summary Statisitics forGPMean 
-
- Median    IQR    Mean      SD   Min   Max   Range
--------  -----  ------  ------  ----  ----  ------
-   3.25   0.95   3.243   0.688     1     5       4
+| Median|  IQR|  Mean|    SD| Min| Max| Range|
+|------:|----:|-----:|-----:|---:|---:|-----:|
+|   3.25| 0.95| 3.243| 0.688|   1|   5|     4|
 
 ```r
 funcsummary(tidydata18_67, "SWLSMean")
@@ -342,11 +330,9 @@ funcsummary(tidydata18_67, "SWLSMean")
 
 
 
-Table: Summary Statisitics forSWLSMean 
-
- Median   IQR    Mean      SD   Min   Max   Range
--------  ----  ------  ------  ----  ----  ------
-      3   1.4   3.043   0.972     1     5       4
+| Median| IQR|  Mean|    SD| Min| Max| Range|
+|------:|---:|-----:|-----:|---:|---:|-----:|
+|      3| 1.4| 3.043| 0.972|   1|   5|     4|
 
 ```r
 # 4b (cont.) Created a histogram for both Annual Income and General Procrastination Scale Mean
@@ -411,246 +397,240 @@ occ <- as.data.frame(count(occ, 'Occupation'))
 ```
 
 ```r
-kable(occ, caption = "Frequency of Occupation Responses")
+kable(occ, format = "markdown", caption = "Frequency of Occupation Responses")
 ```
 
 
 
-Table: Frequency of Occupation Responses
-
-Occupation                                 freq
-----------------------------------------  -----
-                                           2644
-Academic                                      2
-Accountant                                    2
-Accounting                                    2
-Accounting Manager                            2
-Admin Assist                                  2
-Administrator                                10
-Analyst                                       5
-Architect                                     4
-Art Director                                  2
-Artist                                        6
-Assistant                                    52
-Associate                                     2
-Attorney                                     49
-Bank Teller                                   3
-Banker                                        2
-Business                                      2
-Business Owner                                7
-CEO                                           3
-Chief Of Staff                                2
-Civil Servant                                 2
-Civil Service                                 2
-Clerk                                         5
-Clutter Clearer,  Video Editor, Caterer       2
-Communications                                2
-Consultant                                   43
-Consumer Case Coordinator                     2
-Copy Writer                                   2
-Counselor                                     2
-Creative Director                             2
-Customer Service                              9
-Dentist                                       2
-Deputy Director                               3
-Designer                                      4
-Diplomat                                      2
-Director                                     10
-Doctor; Physician                            16
-Driver                                        2
-Editor                                       21
-Educator                                    157
-Engineer                                     47
-Epidemiologist                                2
-Executive Director                            2
-Finance                                       5
-Financial Advisor                            11
-Financial Analyst                             2
-Geologist                                     2
-Graphic Designer                             10
-Home Maker                                   11
-Houswife                                     16
-Human Resource Manager                        3
-Insurance                                     2
-Insurance Agent                               4
-Internship                                    2
-IT                                            2
-IT Director                                   2
-IT Specialist                                 2
-IT Support                                    2
-Journalist                                    6
-Journalist (freelance)                        2
-Laboratory Technician                         2
-Law Clerk                                     2
-Law Enforcement                               3
-Lecturer                                      2
-Letter Carrier                                2
-Librarian                                     9
-Library Technician                            2
-Manager                                      32
-Market Analyst                                5
-Market Research Analyst                       2
-Marketing                                    21
-Marketing Copywriter                          2
-Musician                                      3
-Nanny                                         5
-Nurse                                        20
-Operations Manager                            4
-Other                                       374
-Owner                                         2
-Paralegal                                     2
-Paraprofessional                              2
-Pastor ; Life Coach  Clergy                   5
-Pharmacist                                    3
-Policy Analyst                                2
-President                                     7
-Press Officer                                 2
-Programmer                                   34
-Project Manager                              10
-Psychologist                                  8
-Psychotherapist                               3
-Receptionist                                  3
-Research Associate                            4
-Research Scientist                            8
-Researcher                                    3
-Retail                                        4
-Retired                                      25
-Sales                                        18
-Scientist                                    12
-Secretary                                     5
-Self Employed                                 3
-Self-employed Photographer                    2
-Server                                       10
-Social Worker                                 7
-Software Pro                                  2
-Stocker                                       2
-Student                                      27
-Supervisor                                   10
-Systems Analyst                               2
-Technical Writer                              4
-Training Coordinator                          2
-Translator                                    6
-Tutor                                         5
-Unemployed                                   18
-Veterinarian                                  2
-Vice-president                                2
-Web Designer                                  4
-Writer                                       19
-Writer/editor                                 2
+|Occupation                              | freq|
+|:---------------------------------------|----:|
+|                                        | 2644|
+|Academic                                |    2|
+|Accountant                              |    2|
+|Accounting                              |    2|
+|Accounting Manager                      |    2|
+|Admin Assist                            |    2|
+|Administrator                           |   10|
+|Analyst                                 |    5|
+|Architect                               |    4|
+|Art Director                            |    2|
+|Artist                                  |    6|
+|Assistant                               |   52|
+|Associate                               |    2|
+|Attorney                                |   49|
+|Bank Teller                             |    3|
+|Banker                                  |    2|
+|Business                                |    2|
+|Business Owner                          |    7|
+|CEO                                     |    3|
+|Chief Of Staff                          |    2|
+|Civil Servant                           |    2|
+|Civil Service                           |    2|
+|Clerk                                   |    5|
+|Clutter Clearer,  Video Editor, Caterer |    2|
+|Communications                          |    2|
+|Consultant                              |   43|
+|Consumer Case Coordinator               |    2|
+|Copy Writer                             |    2|
+|Counselor                               |    2|
+|Creative Director                       |    2|
+|Customer Service                        |    9|
+|Dentist                                 |    2|
+|Deputy Director                         |    3|
+|Designer                                |    4|
+|Diplomat                                |    2|
+|Director                                |   10|
+|Doctor; Physician                       |   16|
+|Driver                                  |    2|
+|Editor                                  |   21|
+|Educator                                |  157|
+|Engineer                                |   47|
+|Epidemiologist                          |    2|
+|Executive Director                      |    2|
+|Finance                                 |    5|
+|Financial Advisor                       |   11|
+|Financial Analyst                       |    2|
+|Geologist                               |    2|
+|Graphic Designer                        |   10|
+|Home Maker                              |   11|
+|Houswife                                |   16|
+|Human Resource Manager                  |    3|
+|Insurance                               |    2|
+|Insurance Agent                         |    4|
+|Internship                              |    2|
+|IT                                      |    2|
+|IT Director                             |    2|
+|IT Specialist                           |    2|
+|IT Support                              |    2|
+|Journalist                              |    6|
+|Journalist (freelance)                  |    2|
+|Laboratory Technician                   |    2|
+|Law Clerk                               |    2|
+|Law Enforcement                         |    3|
+|Lecturer                                |    2|
+|Letter Carrier                          |    2|
+|Librarian                               |    9|
+|Library Technician                      |    2|
+|Manager                                 |   32|
+|Market Analyst                          |    5|
+|Market Research Analyst                 |    2|
+|Marketing                               |   21|
+|Marketing Copywriter                    |    2|
+|Musician                                |    3|
+|Nanny                                   |    5|
+|Nurse                                   |   20|
+|Operations Manager                      |    4|
+|Other                                   |  374|
+|Owner                                   |    2|
+|Paralegal                               |    2|
+|Paraprofessional                        |    2|
+|Pastor ; Life Coach  Clergy             |    5|
+|Pharmacist                              |    3|
+|Policy Analyst                          |    2|
+|President                               |    7|
+|Press Officer                           |    2|
+|Programmer                              |   34|
+|Project Manager                         |   10|
+|Psychologist                            |    8|
+|Psychotherapist                         |    3|
+|Receptionist                            |    3|
+|Research Associate                      |    4|
+|Research Scientist                      |    8|
+|Researcher                              |    3|
+|Retail                                  |    4|
+|Retired                                 |   25|
+|Sales                                   |   18|
+|Scientist                               |   12|
+|Secretary                               |    5|
+|Self Employed                           |    3|
+|Self-employed Photographer              |    2|
+|Server                                  |   10|
+|Social Worker                           |    7|
+|Software Pro                            |    2|
+|Stocker                                 |    2|
+|Student                                 |   27|
+|Supervisor                              |   10|
+|Systems Analyst                         |    2|
+|Technical Writer                        |    4|
+|Training Coordinator                    |    2|
+|Translator                              |    6|
+|Tutor                                   |    5|
+|Unemployed                              |   18|
+|Veterinarian                            |    2|
+|Vice-president                          |    2|
+|Web Designer                            |    4|
+|Writer                                  |   19|
+|Writer/editor                           |    2|
 
 ```r
 # 4d Determined the counts of participants per country
 ppc <- setNames(tally(group_by(tidydata18_67, Country), sort = TRUE), c("Country", "Count"))
-kable(ppc, caption = "Frequency of Response per Country")
+kable(ppc, format = "markdown", caption = "Frequency of Response per Country")
 ```
 
 
 
-Table: Frequency of Response per Country
-
-Country               Count
--------------------  ------
-United States          2771
-Canada                  243
-United Kingdom          179
-                        159
-Australia                99
-India                    78
-Italy                    60
-Germany                  36
-Brazil                   20
-Ireland                  19
-Israel                   19
-Netherlands              18
-Sweden                   15
-China                    14
-Norway                   14
-France                   13
-Japan                    13
-Spain                    13
-Finland                  12
-New Zealand              12
-South Africa             12
-Mexico                   11
-Philippines              11
-Switzerland              11
-Greece                   10
-Belgium                   9
-Denmark                   9
-Turkey                    9
-Hong Kong                 7
-Portugal                  7
-Slovenia                  6
-Poland                    5
-Romania                   5
-Chile                     4
-Croatia                   4
-Malaysia                  4
-Singapore                 4
-Afghanistan               3
-Algeria                   3
-Argentina                 3
-Austria                   3
-Czech Republic            3
-Ecuador                   3
-Uruguay                   3
-Albania                   2
-Bulgaria                  2
-Colombia                  2
-Ghana                     2
-Iran                      2
-Malta                     2
-Peru                      2
-Saudi Arabia              2
-Serbia                    2
-South Korea               2
-Thailand                  2
-Ukraine                   2
-Venezuela                 2
-Andorra                   1
-Bahamas                   1
-Barbados                  1
-Bolivia                   1
-Botswana                  1
-Cyprus                    1
-Dominican Republic        1
-Egypt                     1
-El Salvador               1
-Guyana                    1
-Hungary                   1
-Iceland                   1
-Jamaica                   1
-Kenya                     1
-Lithuania                 1
-Luxembourg                1
-Macedonia                 1
-Morocco                   1
-Myanmar                   1
-Nicaragua                 1
-Pakistan                  1
-Panama                    1
-Qatar                     1
-Russia                    1
-Sri Lanka                 1
-Vietnam                   1
-Antigua & Barbuda         1
+|Country            | Count|
+|:------------------|-----:|
+|United States      |  2771|
+|Canada             |   243|
+|United Kingdom     |   179|
+|                   |   159|
+|Australia          |    99|
+|India              |    78|
+|Italy              |    60|
+|Germany            |    36|
+|Brazil             |    20|
+|Ireland            |    19|
+|Israel             |    19|
+|Netherlands        |    18|
+|Sweden             |    15|
+|China              |    14|
+|Norway             |    14|
+|France             |    13|
+|Japan              |    13|
+|Spain              |    13|
+|Finland            |    12|
+|New Zealand        |    12|
+|South Africa       |    12|
+|Mexico             |    11|
+|Philippines        |    11|
+|Switzerland        |    11|
+|Greece             |    10|
+|Belgium            |     9|
+|Denmark            |     9|
+|Turkey             |     9|
+|Hong Kong          |     7|
+|Portugal           |     7|
+|Slovenia           |     6|
+|Poland             |     5|
+|Romania            |     5|
+|Chile              |     4|
+|Croatia            |     4|
+|Malaysia           |     4|
+|Singapore          |     4|
+|Afghanistan        |     3|
+|Algeria            |     3|
+|Argentina          |     3|
+|Austria            |     3|
+|Czech Republic     |     3|
+|Ecuador            |     3|
+|Uruguay            |     3|
+|Albania            |     2|
+|Bulgaria           |     2|
+|Colombia           |     2|
+|Ghana              |     2|
+|Iran               |     2|
+|Malta              |     2|
+|Peru               |     2|
+|Saudi Arabia       |     2|
+|Serbia             |     2|
+|South Korea        |     2|
+|Thailand           |     2|
+|Ukraine            |     2|
+|Venezuela          |     2|
+|Andorra            |     1|
+|Bahamas            |     1|
+|Barbados           |     1|
+|Bolivia            |     1|
+|Botswana           |     1|
+|Cyprus             |     1|
+|Dominican Republic |     1|
+|Egypt              |     1|
+|El Salvador        |     1|
+|Guyana             |     1|
+|Hungary            |     1|
+|Iceland            |     1|
+|Jamaica            |     1|
+|Kenya              |     1|
+|Lithuania          |     1|
+|Luxembourg         |     1|
+|Macedonia          |     1|
+|Morocco            |     1|
+|Myanmar            |     1|
+|Nicaragua          |     1|
+|Pakistan           |     1|
+|Panama             |     1|
+|Qatar              |     1|
+|Russia             |     1|
+|Sri Lanka          |     1|
+|Vietnam            |     1|
+|Antigua & Barbuda  |     1|
 
 ```r
 # 4e Determine where self assessment of procrastination match others assessment
 tidydata18_67$ProsMatch <- mapply(grepl, pattern = tidydata18_67$SelfP, x = tidydata18_67$OthersP)
 #tidydata18_67[, ProsMatch := grepl("SelfP", "OthersP"), by = x]
 match <- setNames(tally(group_by(tidydata18_67, ProsMatch)), c("Logical", "Count"))
-kable(match, caption = "Number of Self Perception Matches")
+kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 ```
 
 
 
-Table: Number of Self Perception Matches
-
-Logical    Count
---------  ------
-FALSE       1181
-TRUE        2828
+|Logical | Count|
+|:-------|-----:|
+|FALSE   |  1181|
+|TRUE    |  2828|
 
 ## Deeper Analysis and Visualization
 
@@ -678,30 +658,28 @@ ggplot(topfifteen, aes(x = reorder(Country, GPMean), y = GPMean,
 
 ```r
 #6c Table of topfifteen nations for General Procrastiantion Mean
-kable(topfifteen, caption = "Top 15 Countries for General Procrastination (GP) Mean")
+kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (GP) Mean")
 ```
 
 
 
-Table: Top 15 Countries for General Procrastination (GP) Mean
-
-     Country        GPMean     HDI  HumanDev                    
----  ----------  ---------  ------  ----------------------------
-62   Qatar        4.200000   0.856  Very high human development 
-57   Panama       3.950000   0.788  High human development      
-51   Myanmar      3.850000   0.556  Medium human development    
-72   Sri Lanka    3.850000   0.766  High human development      
-60   Poland       3.790000   0.855  Very high human development 
-7    Austria      3.766667   0.893  Very high human development 
-76   Turkey       3.755556   0.767  High human development      
-24   Ecuador      3.716667   0.739  High human development      
-28   France       3.692308   0.897  Very high human development 
-47   Malaysia     3.687500   0.789  High human development      
-68   Slovenia     3.666667   0.890  Very high human development 
-80   Uruguay      3.666667   0.795  High human development      
-35   Iceland      3.650000   0.921  Very high human development 
-61   Portugal     3.650000   0.843  Very high human development 
-73   Sweden       3.643333   0.913  Very high human development 
+|   |Country   |   GPMean|   HDI|HumanDev                    |
+|:--|:---------|--------:|-----:|:---------------------------|
+|62 |Qatar     | 4.200000| 0.856|Very high human development |
+|57 |Panama    | 3.950000| 0.788|High human development      |
+|51 |Myanmar   | 3.850000| 0.556|Medium human development    |
+|72 |Sri Lanka | 3.850000| 0.766|High human development      |
+|60 |Poland    | 3.790000| 0.855|Very high human development |
+|7  |Austria   | 3.766667| 0.893|Very high human development |
+|76 |Turkey    | 3.755556| 0.767|High human development      |
+|24 |Ecuador   | 3.716667| 0.739|High human development      |
+|28 |France    | 3.692308| 0.897|Very high human development |
+|47 |Malaysia  | 3.687500| 0.789|High human development      |
+|68 |Slovenia  | 3.666667| 0.890|Very high human development |
+|80 |Uruguay   | 3.666667| 0.795|High human development      |
+|35 |Iceland   | 3.650000| 0.921|Very high human development |
+|61 |Portugal  | 3.650000| 0.843|Very high human development |
+|73 |Sweden    | 3.643333| 0.913|Very high human development |
 
 
 
