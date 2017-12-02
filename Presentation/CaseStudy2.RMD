@@ -229,9 +229,9 @@ tidydata18_67$Gender <- as.factor(tidydata18_67$Gender)
 #tidydata18_67$Country <- as.factor(tidydata18_67$Country)
 #str(tidydata18_67$Country)
 ws <- as.data.frame(count(tidydata18_67, 'WorkStatus'))
-kable(ws, caption = "Frequency of Work Status Responses")
+kable(ws, format = "markdown", caption = "Frequency of Work Status Responses")
 gen <- as.data.frame(count(tidydata18_67, 'Gender'))
-kable(gen, caption = "Frequency of Gender Responses")
+kable(gen, format = "markdown", caption = "Frequency of Gender Responses")
 occ <- as.data.frame(count(tidydata18_67, 'Occupation'))
 # Labeled all occupations with a count of 1 as "Other"
 occ$Occupation[which(occ$freq == 1)] <- "Other"

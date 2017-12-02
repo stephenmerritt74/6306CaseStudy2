@@ -372,36 +372,32 @@ tidydata18_67$Gender <- as.factor(tidydata18_67$Gender)
 #tidydata18_67$Country <- as.factor(tidydata18_67$Country)
 #str(tidydata18_67$Country)
 ws <- as.data.frame(count(tidydata18_67, 'WorkStatus'))
-kable(ws, caption = "Frequency of Work Status Responses")
+kable(ws, format = "markdown", caption = "Frequency of Work Status Responses")
 ```
 
 
 
-Table: Frequency of Work Status Responses
-
-WorkStatus    freq
------------  -----
-                42
-full-time     2259
-part-time      463
-retired        151
-student        837
-unemployed     257
+|WorkStatus | freq|
+|:----------|----:|
+|           |   42|
+|full-time  | 2259|
+|part-time  |  463|
+|retired    |  151|
+|student    |  837|
+|unemployed |  257|
 
 ```r
 gen <- as.data.frame(count(tidydata18_67, 'Gender'))
-kable(gen, caption = "Frequency of Gender Responses")
+kable(gen, format = "markdown", caption = "Frequency of Gender Responses")
 ```
 
 
 
-Table: Frequency of Gender Responses
-
-Gender    freq
--------  -----
-             6
-Female    2295
-Male      1708
+|Gender | freq|
+|:------|----:|
+|       |    6|
+|Female | 2295|
+|Male   | 1708|
 
 ```r
 occ <- as.data.frame(count(tidydata18_67, 'Occupation'))

@@ -610,9 +610,8 @@ tidydata18_67$Gender &lt;- as.factor(tidydata18_67$Gender)
 #tidydata18_67$Country &lt;- as.factor(tidydata18_67$Country)
 #str(tidydata18_67$Country)
 ws &lt;- as.data.frame(count(tidydata18_67, 'WorkStatus'))
-kable(ws, caption = &quot;Frequency of Work Status Responses&quot;)</code></pre>
+kable(ws, format = &quot;markdown&quot;, caption = &quot;Frequency of Work Status Responses&quot;)</code></pre>
 <table>
-<caption>Frequency of Work Status Responses</caption>
 <thead>
 <tr class="header">
 <th align="left">WorkStatus</th>
@@ -647,9 +646,8 @@ kable(ws, caption = &quot;Frequency of Work Status Responses&quot;)</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>gen &lt;- as.data.frame(count(tidydata18_67, 'Gender'))
-kable(gen, caption = &quot;Frequency of Gender Responses&quot;)</code></pre>
+kable(gen, format = &quot;markdown&quot;, caption = &quot;Frequency of Gender Responses&quot;)</code></pre>
 <table>
-<caption>Frequency of Gender Responses</caption>
 <thead>
 <tr class="header">
 <th align="left">Gender</th>
