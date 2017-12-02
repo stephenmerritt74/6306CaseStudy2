@@ -31,8 +31,16 @@ tidydata$Age<-floor(tidydata$Age)
 #2-c-i Remove "kids" from the Kids Variable response so the end result is a Yes/No answer.
 tidydata$Kids<-gsub(" Kids", "", tidydata$Kids, fixed=TRUE)
 
-#2-c-i Fixed spelling of Isreal to Israel
+#2-c-i Fixed several country spellings and syntax to match HDI tables (ex. Isreal to Israel)
 tidydata$Country[tidydata$Country == 'Isreal'] <- "Israel"
+tidydata$Country[tidydata$Country == 'Antigua'] <- "Antigua & Barbuda"
+tidydata$Country[tidydata$Country == 'Columbia'] <- "Colombia"
+tidydata$Country[tidydata$Country == 'Macao'] <- "China"
+tidydata$Country[tidydata$Country == 'Taiwan'] <- "China"
+tidydata$Country[tidydata$Country == 'Guam'] <- "United States"
+tidydata$Country[tidydata$Country == 'Puerto Rico'] <- "United States"
+tidydata$Country[tidydata$Country == 'Yugoslavia'] <- "Serbia"
+tidydata$Country[tidydata$Country == 'Bermuda'] <- "United Kingdom"
 
 #2c-iii.  All entries with Country=0 are replaced with blank (missing) values
 tidydata$Country[tidydata$Country == '0'] <- ""
