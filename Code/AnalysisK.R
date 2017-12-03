@@ -35,8 +35,24 @@ summary(AgeIncome)
 
 #Create new dataframe that contains Country and Means for each Procrastination Index used in Maps
 
+newtest<-as.data.frame(unique(map.world$region))
+colnames(newtest)<-c("Country")
+HDI_Means<-aggregate(tidydata18_67[, c("GPMean", "DPMean", "AIPMean", "SWLSMean")], list(tidydata18_67$Country), mean, na.rm=TRUE)    #Creates a new object which stores the mean GP, DP, AIP, and SWLS by country
+colnames(HDI_Means)<-c("Country","GPMean", "DPMean", "AIPMean", "SWLSMean")
+
+mapdata<-merge(newtest, HDI_Means, by="Country", all.x=TRUE, all.y=TRUE)
+mapdata$Country<-sort(mapdata$Country)
+
+mapdata$Country[255]<-mapdata$Country[241]
+
+mapdata$Country[254]<-mapdata$Country[237]
+
+mapdata$Country[257]<-mapdata$Country[9]
+
+mapdata<-mapdata[-c(9, 237, 241),]
+
 #Generating Maps for AIPMean, GPMean, SWLSMean, and DPMean
-aipmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+aipmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
   geom_map(aes(fill=AIPMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
   expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
@@ -45,10 +61,11 @@ aipmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the p
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
   ggtitle("AIPMean by Country") + # Sets the title of the map
-  scale_fill_gradient(low = "seagreen1", high = "seagreen4", space = "Lab",na.value = "gray70", guide=guide_colourbar(title.position="top", barwidth=10, title="AIPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
-  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .15),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))   #Theme elements such as the border around the map plot, the position of map components like the legend
+  scale_fill_gradient(low = "antiquewhite", high = "darkred", space = "Lab", na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="AIPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
-gpmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+gpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
   geom_map(aes(fill=GPMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
   expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
@@ -57,10 +74,11 @@ gpmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the pr
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
   ggtitle("GPMean by Country") + # Sets the title of the map
-  scale_fill_gradient(low = "seagreen1", high = "seagreen4", space = "Lab",na.value = "gray70", guide=guide_colourbar(title.position="top", barwidth=10, title="GPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
-  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .15),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))   #Theme elements such as the border around the map plot, the position of map components like the legend
+  scale_fill_gradient(low = "antiquewhite", high = "navyblue", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="GPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
-dpmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+dpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
   geom_map(aes(fill=DPMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
   expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
@@ -69,10 +87,11 @@ dpmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the pr
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
   ggtitle("DPMean by Country") + # Sets the title of the map
-  scale_fill_gradient(low = "seagreen1", high = "seagreen4", space = "Lab",na.value = "gray70", guide=guide_colourbar(title.position="top", barwidth=10, title="DPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
-  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .15),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))   #Theme elements such as the border around the map plot, the position of map components like the legend
+  scale_fill_gradient(low = "antiquewhite", high = "darkgreen", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="DPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
-swlsmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+swlsmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
   geom_map(aes(fill=SWLSMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
   expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
@@ -81,24 +100,11 @@ swlsmap<- ggplot(tidydata18_67, aes(map_id=Country))+    #sets the data and the 
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
   ggtitle("SWLSMean by Country") + # Sets the title of the map
-  scale_fill_gradient(low = "seagreen1", high = "seagreen4", space = "Lab",na.value = "gray70", guide=guide_colourbar(title.position="top", barwidth=10, title="SWLS",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
-  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .15),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))   #Theme elements such as the border around the map plot, the position of map components like the legend
-
-hdimap<- ggplot(HDI_df2, aes(map_id=Country))+    #sets the data and the primary key to link map and data
-  geom_map(aes(fill=HDI), map=map.world)+         #sets the fill value that will determine color and the geographic map data
-  expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
-  coord_map()+                        #Sets the base geographic projection (mercator in this case)
-  #coord_equal()+
-  scale_x_continuous(breaks=NULL)+
-  scale_y_continuous(breaks=NULL)+
-  labs(x = "", y = "") +
-  ggtitle("HDI by Country") + # Sets the title of the map
-  scale_fill_gradient(low = "seagreen1", high = "seagreen4", space = "Lab",na.value = "gray70", guide=guide_colourbar(title.position="top", barwidth=10, title="HDI",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
-  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .15),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))   #Theme elements such as the border around the map plot, the position of map components like the legend
-
+  scale_fill_gradient(low = "antiquewhite", high = "darkorange4", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="SWLS",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
 aipmap 
 gpmap
 dpmap
 swlsmap
-hdimap
