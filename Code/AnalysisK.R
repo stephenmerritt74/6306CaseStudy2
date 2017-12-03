@@ -1,6 +1,8 @@
 library(ggplot2)
 library(maps)
 
+localmap.world<-read.csv("map.world.csv", header=TRUE)
+
 #5c Generating Visualization of AIP by HDI
 topfifteen <- tidydata18_67[,c("Country", "AIPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
@@ -52,8 +54,8 @@ mapdata<-mapdata[-c(9, 237, 241),]
 
 #Generating Maps for AIPMean, GPMean, SWLSMean, and DPMean
 aipmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
-  geom_map(aes(fill=AIPMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
-  expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
+  geom_map(aes(fill=AIPMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
   coord_equal()+
   scale_x_continuous(breaks=NULL)+
@@ -65,8 +67,8 @@ aipmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
 gpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
-  geom_map(aes(fill=GPMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
-  expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
+  geom_map(aes(fill=GPMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
   coord_equal()+
   scale_x_continuous(breaks=NULL)+
@@ -78,8 +80,8 @@ gpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary 
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
 dpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
-  geom_map(aes(fill=DPMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
-  expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
+  geom_map(aes(fill=DPMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
   coord_equal()+
   scale_x_continuous(breaks=NULL)+
@@ -91,8 +93,8 @@ dpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary 
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
 swlsmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
-  geom_map(aes(fill=SWLSMean), map=map.world)+         #sets the fill value that will determine color and the geographic map data
-  expand_limits(x=map.world$long, y=map.world$lat)+ #Sets the latitude and longitudinal extents
+  geom_map(aes(fill=SWLSMean), localmap=map.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
   coord_equal()+
   scale_x_continuous(breaks=NULL)+
