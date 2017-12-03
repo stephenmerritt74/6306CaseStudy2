@@ -139,6 +139,7 @@ NATidy<-sapply(tidydata, function(y) sum(length(which(is.na(y)))))
 NATidy
 ```
 
+## HDI Data Scraping
 ```{r, ECHO = TRUE}
 # 3a scraped Human Development index data from Wikipedia
 url <- "https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries"
@@ -251,12 +252,16 @@ match <- setNames(tally(group_by(tidydata18_67, ProsMatch)), c("Logical", "Count
 kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 ```
 
+### The survey results indicate a bias towards Western Highly Developed nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  The vast majority of respondents had an annual income of less than $50k, and of the people who chose to respond, "educator"" was the most frequent survey occupation response (157).  The nearest competitor to educator as occupation identified themselves as "assistants".  70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
+
 ## Deeper Analysis and Visualization
 ```{r, ECHO = TRUE}
 #5b Create a barchart for the top 15 nations in average pro
 topfifteen <- tidydata18_67[ ,c("Country", "GPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
                        c("Country", "GPMean", "HDI"))
+topfifteen <- merge(topfifteen, ppc, by = "Country", all = TRUE)
+topfifteen <- subset(topfifteen, Count >=5)
 topfifteen <- topfifteen[order(-topfifteen$GPMean), ]
 topfifteen$HumanDev<- cut(topfifteen$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
 levels(topfifteen$HumanDev) <- c("Low human development", "Medium human development", 
@@ -281,6 +286,8 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General P
 topfifteen <- tidydata18_67[,c("Country", "AIPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
                        c("Country", "AIPMean", "HDI"))
+topfifteen <- merge(topfifteen, ppc, by = "Country", all = TRUE)
+topfifteen <- subset(topfifteen, Count >=5)
 topfifteen <- topfifteen[order(-topfifteen$AIPMean), ]
 topfifteen$HumanDev<- cut(topfifteen$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
 levels(topfifteen$HumanDev) <- c("Low human development", "Medium human development", 
@@ -294,8 +301,10 @@ ggplot(topfifteen, aes(x = reorder(Country, AIPMean), y = AIPMean,
   labs(x = "Country", y = "AIP Mean") +
   coord_flip() +
   scale_fill_brewer(palette = "Dark2")
+kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (AIP) Mean")
 ```
 
+### When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframe.  When setting the threshold to at least five respondents, the topfifteen dataframe for both AIP and GP changed drastically and the overall population dropped from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.
 ```{r, ECHO = TRUE}
 #5d Answering relationship of Age vs. Income
 #Generate Scatterplot
@@ -331,9 +340,8 @@ ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean,
     coord_flip() +
     scale_fill_brewer(palette = "Dark2")
 ```
-```
 
-The scatterplot data showed very little correlation when comparing the Human Development Index with the Satisfaction With Life scale.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those liviing in more Highly developed nations do have a slightly higher satisfaction with life. 
+### The scatterplot data showed very little correlation when comparing the Human Development Index with the Satisfaction With Life scale.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those liviing in more Highly developed nations do have a slightly higher satisfaction with life.
 
 ```{r, ECHO = TRUE}
 

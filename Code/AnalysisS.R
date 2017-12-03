@@ -44,6 +44,7 @@ ws <- as.data.frame(count(tidydata18_67, 'WorkStatus'))
 kable(ws, caption = "Frequency of Work Status Responses")
 gen <- as.data.frame(count(tidydata18_67, 'Gender'))
 kable(gen, caption = "Frequency of Gender Responses")
+
 occ <- as.data.frame(count(tidydata18_67, 'Occupation'))
 # Labeled all occupations with a count of 1 as "Other"
 occ$Occupation[which(occ$freq == 1)] <- "Other"
@@ -64,6 +65,8 @@ kable(match, caption = "Number of Self Perception Matches")
 topfifteen <- tidydata18_67[ ,c("Country", "GPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
                        c("Country", "GPMean", "HDI"))
+topfifteen <- merge(topfifteen, ppc, by = "Country", all = TRUE)
+topfifteen <- subset(topfifteen, Count >=5)
 topfifteen <- topfifteen[order(-topfifteen$GPMean), ]
 topfifteen$HumanDev<- cut(topfifteen$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
 levels(topfifteen$HumanDev) <- c("Low human development", "Medium human development", 
@@ -83,7 +86,7 @@ ggplot(tidydata18_67, aes(HDI, SWLSMean, color = HDICategory)) +
     geom_point(shape = 16, size = 5, show.legend = FALSE, alpha = 1) + 
     geom_smooth(method = 'lm', color = "red") + 
     ggtitle("HDI vs. Satisfaction With Life Scale (SWLS) Mean") + labs(x = "HDI", y = "SWLSMean")
-cor(tidydata18_67$HDI, tidydata18_67$SWLSMean, method = "pearson")
+cor(tidydata18_67$HDI, tidydata18_67$SWLSMean, method = "pearson", use = "na.or.complete")
 
 SWLSHDICat <- tidydata18_67[ ,c("HDICategory", "SWLSMean")]
 SWLSHDICat <- setNames(aggregate(SWLSHDICat[ ,2], list(HDICategory=SWLSHDICat$HDICategory), mean), 

@@ -182,6 +182,7 @@ NATidy
 ##          0          0          0          0          0
 ```
 
+## HDI Data Scraping
 
 ```r
 # 3a scraped Human Development index data from Wikipedia
@@ -632,6 +633,8 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 |FALSE   |  1181|
 |TRUE    |  2828|
 
+### The survey results indicate a bias towards Western Highly Developed nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  The vast majority of respondents had an annual income of less than $50k, and of the people who chose to respond, "educator"" was the most frequent survey occupation response (157).  The nearest competitor to educator as occupation identified themselves as "assistants".  70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
+
 ## Deeper Analysis and Visualization
 
 ```r
@@ -639,6 +642,8 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 topfifteen <- tidydata18_67[ ,c("Country", "GPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
                        c("Country", "GPMean", "HDI"))
+topfifteen <- merge(topfifteen, ppc, by = "Country", all = TRUE)
+topfifteen <- subset(topfifteen, Count >=5)
 topfifteen <- topfifteen[order(-topfifteen$GPMean), ]
 topfifteen$HumanDev<- cut(topfifteen$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
 levels(topfifteen$HumanDev) <- c("Low human development", "Medium human development", 
@@ -663,23 +668,23 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General P
 
 
 
-|   |Country   |   GPMean|   HDI|HumanDev                    |
-|:--|:---------|--------:|-----:|:---------------------------|
-|62 |Qatar     | 4.200000| 0.856|Very high human development |
-|57 |Panama    | 3.950000| 0.788|High human development      |
-|51 |Myanmar   | 3.850000| 0.556|Medium human development    |
-|72 |Sri Lanka | 3.850000| 0.766|High human development      |
-|60 |Poland    | 3.790000| 0.855|Very high human development |
-|7  |Austria   | 3.766667| 0.893|Very high human development |
-|76 |Turkey    | 3.755556| 0.767|High human development      |
-|24 |Ecuador   | 3.716667| 0.739|High human development      |
-|28 |France    | 3.692308| 0.897|Very high human development |
-|47 |Malaysia  | 3.687500| 0.789|High human development      |
-|68 |Slovenia  | 3.666667| 0.890|Very high human development |
-|80 |Uruguay   | 3.666667| 0.795|High human development      |
-|35 |Iceland   | 3.650000| 0.921|Very high human development |
-|61 |Portugal  | 3.650000| 0.843|Very high human development |
-|73 |Sweden    | 3.643333| 0.913|Very high human development |
+|   |Country      |   GPMean|   HDI| Count|HumanDev                    |
+|:--|:------------|--------:|-----:|-----:|:---------------------------|
+|62 |Poland       | 3.790000| 0.855|     5|Very high human development |
+|78 |Turkey       | 3.755556| 0.767|     9|High human development      |
+|30 |France       | 3.692308| 0.897|    13|Very high human development |
+|70 |Slovenia     | 3.666667| 0.890|     6|Very high human development |
+|63 |Portugal     | 3.650000| 0.843|     7|Very high human development |
+|75 |Sweden       | 3.643333| 0.913|    15|Very high human development |
+|31 |Germany      | 3.608333| 0.926|    36|Very high human development |
+|55 |New Zealand  | 3.583333| 0.915|    12|Very high human development |
+|33 |Greece       | 3.530000| 0.866|    10|Very high human development |
+|40 |Ireland      | 3.518421| 0.923|    19|Very high human development |
+|15 |Brazil       | 3.495000| 0.754|    20|High human development      |
+|71 |South Africa | 3.470833| 0.666|    12|Medium human development    |
+|73 |Spain        | 3.469231| 0.884|    13|Very high human development |
+|29 |Finland      | 3.450000| 0.895|    12|Very high human development |
+|35 |Hong Kong    | 3.442857| 0.917|     7|Very high human development |
 
 
 
@@ -688,6 +693,8 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General P
 topfifteen <- tidydata18_67[,c("Country", "AIPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
                        c("Country", "AIPMean", "HDI"))
+topfifteen <- merge(topfifteen, ppc, by = "Country", all = TRUE)
+topfifteen <- subset(topfifteen, Count >=5)
 topfifteen <- topfifteen[order(-topfifteen$AIPMean), ]
 topfifteen$HumanDev<- cut(topfifteen$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
 levels(topfifteen$HumanDev) <- c("Low human development", "Medium human development", 
@@ -705,6 +712,31 @@ ggplot(topfifteen, aes(x = reorder(Country, AIPMean), y = AIPMean,
 
 ![](CaseStudy2_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
+```r
+kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (AIP) Mean")
+```
+
+
+
+|   |Country     |  AIPMean|   HDI| Count|HumanDev                    |
+|:--|:-----------|--------:|-----:|-----:|:---------------------------|
+|62 |Poland      | 3.600000| 0.855|     5|Very high human development |
+|78 |Turkey      | 3.555556| 0.767|     9|High human development      |
+|30 |France      | 3.538461| 0.897|    13|Very high human development |
+|55 |New Zealand | 3.500000| 0.915|    12|Very high human development |
+|75 |Sweden      | 3.466667| 0.913|    15|Very high human development |
+|35 |Hong Kong   | 3.428571| 0.917|     7|Very high human development |
+|33 |Greece      | 3.400000| 0.866|    10|Very high human development |
+|65 |Romania     | 3.400000| 0.802|     5|Very high human development |
+|61 |Philippines | 3.363636| 0.682|    11|Medium human development    |
+|29 |Finland     | 3.333333| 0.895|    12|Very high human development |
+|31 |Germany     | 3.305556| 0.926|    36|Very high human development |
+|57 |Norway      | 3.285714| 0.949|    14|Very high human development |
+|54 |Netherlands | 3.277778| 0.924|    18|Very high human development |
+|73 |Spain       | 3.230769| 0.884|    13|Very high human development |
+|12 |Belgium     | 3.222222| 0.896|     9|Very high human development |
+
+### When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframe.  When setting the threshold to at least five respondents, the topfifteen dataframe for both AIP and GP changed drastically and the overall population dropped from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.
 
 ```r
 #5d Answering relationship of Age vs. Income
@@ -795,8 +827,7 @@ ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean,
 ```
 
 ![](CaseStudy2_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
-```
 
-The scatterplot data showed very little correlation when comparing the Human Development Index with the Satisfaction With Life scale.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those liviing in more Highly developed nations do have a slightly higher satisfaction with life. 
+### The scatterplot data showed very little correlation when comparing the Human Development Index with the Satisfaction With Life scale.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those liviing in more Highly developed nations do have a slightly higher satisfaction with life.
 
 
