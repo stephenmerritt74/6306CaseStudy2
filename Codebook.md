@@ -268,3 +268,13 @@ The following are tables that indicate the starting name of a variable and their
 | 59 | (SWLS 5) If I could live my life over, I would change almost nothing | SWLS5 |
 | 60 | Do you consider yourself a procrastinator? | SelfP |
 | 61 | Do others consider you a procrastinator? | OthersP |
+
+### Data Frames and Data Tables
+| Data Name | Variables | Observations | Method |
+| :-------------: | :------------:| :----------: | :----------: |
+| tidydata | 65 | 4264 | See Above |
+| HDI_df | 4 | 189 | Scraped Human Development Index Data from Wikipedia |
+| df2 | 1 | 189 | Subset HDI_df for discrete 'Country' names |
+| HDI_df2 | 3 | 189 | cbind HDI_df and df2 adding Human Development levels |
+| tidydata1 | 67 | 4367 | Merged tidydata with HDI_df2 via 'Country' Variable |
+
