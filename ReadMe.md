@@ -44,8 +44,16 @@ locale:
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
+other attached packages:
+[1] maps_3.2.0    stringr_1.2.0 rvest_0.3.2   xml2_1.1.1    bindrcpp_0.2  plyr_1.8.4    dplyr_0.7.4   knitr_1.17   
+[9] ggplot2_2.2.1
+
 loaded via a namespace (and not attached):
-[1] compiler_3.4.2 tools_3.4.2
+ [1] Rcpp_0.12.13       bindr_0.1          magrittr_1.5       munsell_0.4.3      colorspace_1.3-2   R6_2.2.2          
+ [7] rlang_0.1.2        highr_0.6          httr_1.3.1         tools_3.4.2        grid_3.4.2         gtable_0.2.0      
+[13] selectr_0.3-1      digest_0.6.12      lazyeval_0.2.0     assertthat_0.2.0   tibble_1.3.4       mapproj_1.2-5     
+[19] RColorBrewer_1.1-2 curl_2.8.1         evaluate_0.10.1    glue_1.1.1         labeling_0.3       stringi_1.1.5     
+[25] compiler_3.4.2     scales_0.5.0       XML_3.98-1.9       pkgconfig_2.0.1  
 
 ## Organization
 ### Folder Organization
