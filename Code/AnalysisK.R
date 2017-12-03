@@ -1,6 +1,5 @@
 library(ggplot2)
-
-
+library(maps)
 
 #5c Generating Visualization of AIP by HDI
 topfifteen <- tidydata18_67[,c("Country", "AIPMean", "HDI")]
