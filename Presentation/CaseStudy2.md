@@ -1,6 +1,8 @@
 # CaseStudy2
 Kevin Dickens & Stephen Merritt  
 November 26, 2017  
+# Introduction
+
 ## Requried Libraries
 
 ```r
@@ -335,24 +337,27 @@ funcsummary(tidydata18_67, "SWLSMean")
 |------:|---:|-----:|-----:|---:|---:|-----:|
 |      3| 1.4| 3.043| 0.972|   1|   5|     4|
 
+
 ```r
 # 4b (cont.) Created a histogram for both Annual Income and General Procrastination Scale Mean
 hist(tidydata18_67$AnnIncome, col = "blue3", main = "Histogram of Annual Income",
      xlab = "Annual Income in USD")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 ```r
 hist(tidydata18_67$GPMean, col = "blue3", main = "Histogram of the General Procrastination Mean",
      xlab = "Mean of General Procastation Scale")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-4-2.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-5-2.png)<!-- -->
+
+### Histograms
+The income histogram is right skewed with the vast majority of the Income being at or below $50,000 per year.  The general procrastination historgram is left skewed with the majority of mean GP scores being 3 or above.
+
 
 ```r
-#AnnIncome is right skewed while GPMean is left skewed
-
 # 4c Created dataframes to provide the frequency of Gender, WorkStatus, and Occupation
 tidydata18_67$WorkStatus <- as.factor(tidydata18_67$WorkStatus)
 tidydata18_67$Gender <- as.factor(tidydata18_67$Gender)
@@ -633,7 +638,8 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 |FALSE   |  1181|
 |TRUE    |  2828|
 
-### The survey results indicate a bias towards Western Highly Developed nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  The vast majority of respondents had an annual income of less than $50k, and of the people who chose to respond, "educator"" was the most frequent survey occupation response (157).  The nearest competitor to educator as occupation identified themselves as "assistants".  70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
+### EDA Results
+The survey results indicate a bias towards Western Highly Developed nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified themselves as "assistants".  57% of the respondents were women and 70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
 
 ## Deeper Analysis and Visualization
 
@@ -659,7 +665,7 @@ ggplot(topfifteen, aes(x = reorder(Country, GPMean), y = GPMean,
     scale_fill_brewer(palette = "Dark2")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 ```r
 #6c Table of topfifteen nations for General Procrastiantion Mean
@@ -710,7 +716,7 @@ ggplot(topfifteen, aes(x = reorder(Country, AIPMean), y = AIPMean,
   scale_fill_brewer(palette = "Dark2")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ```r
 kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (AIP) Mean")
@@ -736,7 +742,9 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General P
 |73 |Spain       | 3.230769| 0.884|    13|Very high human development |
 |12 |Belgium     | 3.222222| 0.896|     9|Very high human development |
 
-### When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframe.  When setting the threshold to at least five respondents, the topfifteen dataframe for both AIP and GP changed drastically and the overall population dropped from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.
+### Top fifteen country results
+When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We dediced to set a new threshold of requiring at least five respondents to be considered in the top-15 list.  This caused a drastics change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.
+
 
 ```r
 #5d Answering relationship of Age vs. Income
@@ -747,7 +755,7 @@ ggplot(na.omit(tidydata18_67), aes(Age, AnnIncome, color = Gender)) +
   ggtitle("Age vs. Annual Income by Gender") + labs(x = "Age", y = "AnnIncome")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 ```r
 cor(tidydata18_67$AnnIncome, tidydata18_67$Age, method = "pearson", use="na.or.complete")
@@ -802,7 +810,7 @@ ggplot(tidydata18_67, aes(HDI, SWLSMean, color = HDICategory)) +
 ## Warning: Removed 160 rows containing missing values (geom_point).
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 ```r
 cor(tidydata18_67$HDI, tidydata18_67$SWLSMean, method = "pearson", use = "na.or.complete")
@@ -826,8 +834,9 @@ ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean,
     scale_fill_brewer(palette = "Dark2")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
 
-### The scatterplot data showed very little correlation when comparing the Human Development Index with the Satisfaction With Life scale.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those liviing in more Highly developed nations do have a slightly higher satisfaction with life.
+### Scatterplot Results 
+The scatterplot data showed very little correlation when comparing the Human Development Index with the Satisfaction With Life scale.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those liviing in more Highly developed nations do have a slightly higher satisfaction with life.
 
 

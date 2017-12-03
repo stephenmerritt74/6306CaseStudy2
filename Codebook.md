@@ -270,11 +270,21 @@ The following are tables that indicate the starting name of a variable and their
 | 61 | Do others consider you a procrastinator? | OthersP |
 
 ### Data Frames and Data Tables
+---
 | Data Name | Variables | Observations | Method |
-| :-------------: | :------------:| :----------: | :----------: |
+| :-------------: | :------------:| :----------: | ------------ |
+| rawdata | 61 | 4264 | Result of read.csv on Procastination.csv |
 | tidydata | 65 | 4264 | See Above |
 | HDI_df | 4 | 189 | Scraped Human Development Index Data from Wikipedia |
 | df2 | 1 | 189 | Subset HDI_df for discrete 'Country' names |
 | HDI_df2 | 3 | 189 | cbind HDI_df and df2 adding Human Development levels |
 | tidydata1 | 67 | 4367 | Merged tidydata with HDI_df2 via 'Country' Variable |
+| tidydata18_67 | 68 | 4009 | Removed Ages less than 18 and above 67.5 from tidydata1 |
+| ws | 2 | 6 | peform count function on tidydata18_67 for 'WorkStatus' |
+| gen | 2 | 3 | peform count function on tidydata18_67 for 'Gender' |
+| occ | 2 | 117 | peform count function on tidydata18_67 for 'Occupation' |
+| ppc | 2 | 84 | peform tally, group_by function on tidydata18_67 for 'Country' |
+| match | 2 | 2 | add ProsMatch column to tidydata18_67 and peform tally, group_by function | 
+| topfifteen | 5 | 15 | subset tidydata18_67 top 15 countries based on 'GPMean' & 'AIPMean' |
+| SWLSHDICat | 2 | 4 | subset and aggregate tidydata18_67 for 'HDICategory' and 'SLWSMean' |
 
