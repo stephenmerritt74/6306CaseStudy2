@@ -6,9 +6,10 @@ output:
     html_document:
         keep_md: yes
 ---
+
 # Abstract
 ---
-The study described in this proposal seeks to analyze procrastination and developmentnal data by country in order to better understand the statistical ties between the two and the spatial distribution across the globe.  The goal of this study is to provide clients useful information to avoid large overhead costs due to procrastination costs.
+The study described in this proposal seeks to analyze procrastination and developmental data by country in order to better understand the statistical ties between the two and the spatial distribution across the globe.  The goal of this study is to provide clients useful information to avoid large overhead costs due to procrastination costs.
 
 # Introduction
 ---
@@ -48,7 +49,7 @@ The analysis performed by this study was created using R, a free statistical pro
 ---
 The data in this project consists of two primary files: Procrastination.csv and HumanDevelopmentIndex.csv. Procrastination.csv contains 4265 observations of survey participants and captures 61 variables that include demographic data and various procrastination index responses. HumanDevelopmentIndex.csv contains 191 records with 3 variables that capture the HDI score, category, and the country for whom the score is calculated. Both tables contain headers. Procrastination.csv comes from an online survey response while HumanDevelopmentIndex.csv was scrapped manually from Wikipedia.
 
-The procrastination data in-particular required a great deal of cleaning to make it useful for analysis. Most of teh column names required renaming to remove long names or clarify the intent of the variable. Several non-sensical responses for various fields were removed entirely and treated as missing values. The occupation variable field proved especially troublesome as most open text fields end up. Many "like" occupations were merged together however due to the nature of free text fields there were simply too many unique fields to collapse further without removing meaningful information. Eventually the two tables are merged together using the Country variable.
+The procrastination data in-particular required a great deal of cleaning to make it useful for analysis. Most of the column names required renaming to remove long names or clarify the intent of the variable. Several non-sensical responses for various fields were removed entirely and treated as missing values. The occupation variable field proved especially troublesome as most open text fields end up. Many "like" occupations were merged together however due to the nature of free text fields there were simply too many unique fields to collapse further without removing meaningful information. Eventually the two tables are merged together using the Country variable.
 
 ## Data Source
 ---
@@ -62,6 +63,9 @@ The original data provided in procrastination.csv was gathered from a survey wit
 
 ```{r, echo=TRUE}
 #Evaluate data types of variables
+#Data Ingest and initialization
+rawdata<-read.csv("~/6306DoingDataScience/6306CaseStudy2/Data/Procrastination.csv", header=TRUE)
+
 str(rawdata)
 
 #2a. Output Rows and Columns
@@ -90,8 +94,6 @@ Likewise, the blank character fields or levels in a factor pose similar issues t
 
 ## Tidying The Qualtrics Data
 ```{r, ECHO = TRUE}
-#Data Ingest and initialization
-rawdata<-read.csv("Procrastination.csv", header=TRUE)
 
 #Assigning to new variable.  This is done to make it easier to go back to clean data without importing again.
 tidydata<-rawdata
@@ -203,7 +205,7 @@ Several variables were the wrong structure type and this needed correction in or
 
 The Country variable contained two issues.  The first issue were numerous mispellings of countries which were easily corrected.  The second was a potential mismatch with the Country field of the HDI data scrapped later in this analysis.  Such conflicts were renamed in favor of the HDI data.  Some values did not exist in the HDI data because they are not separate countries so these territories, such as Guam, were rolled into their parent nation.
 
-The occupation field required the most work and still remains of dubious value.  With over 600 unique occupations in the untidied dataset due to the nature of open text fields, we wanted to make the field more legible but nto filter out the usefulness of individual respondents.  As such the many garbage responses such as "Fdsdf", "Ouh", or "Please Specify" were recoded as missing values.    Where possible common words were used to collapse like jobs together.  Examples include "Teacher", "Faculty", and "Professor" collapsing down into "Educator".  Several other typos and translation issues were corrected but the end result is still roughly 500 unique occupations.
+The occupation field required the most work and still remains of dubious value.  With over 600 unique occupations in the untidied dataset due to the nature of open text fields, we wanted to make the field more legible but not filter out the usefulness of individual respondents.  As such the many garbage responses such as "Fdsdf", "Ouh", or "Please Specify" were recoded as missing values.    Where possible common words were used to collapse like jobs together.  Examples include "Teacher", "Faculty", and "Professor" collapsing down into "Educator".  Several other typos and translation issues were corrected but the end result is still roughly 500 unique occupations.
 
 Further work could be done to aggregate these jobs into common categories such as "Education", "Agriculture", "Finance", "Technology" etc. but since this specific analysis did not involve a deep look at occupation those decisions were left to future analysis.
 
@@ -347,7 +349,7 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 ```
 
 ### EDA Results
-The survey results indicate a bias towards Western Highly Developed nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified themselves as "assistants".  57% of the respondents were women and 70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
+The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified themselves as "assistants".  57% of the respondents were women and 70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
 
 ## Deeper Analysis and Visualization
 ```{r, ECHO = TRUE}
@@ -399,7 +401,6 @@ ggplot(topfifteen, aes(x = reorder(Country, AIPMean), y = AIPMean,
 kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (AIP) Mean")
 ```
 
-### Top fifteen country results
 When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We dediced to set a new threshold of requiring at least five respondents to be considered in the top-15 list.  This caused a drastics change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.
 
 ```{r, ECHO = TRUE}
@@ -416,6 +417,9 @@ AgeIncome<-lm(AnnIncome~Age, data=na.omit(tidydata))
 
 summary(AgeIncome)
 ```
+
+
+
 
 ```{r, ECHO = TRUE}
 #5e Determine if there is a relationship between Human Development and Satisfaction With Life
@@ -438,18 +442,13 @@ ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean,
     scale_fill_brewer(palette = "Dark2")
 ```
 
-### Scatterplot Results 
-The scatterplot data showed very little correlation when comparing the Human Development Index with the Satisfaction With Life scale.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those liviing in more Highly developed nations do have a slightly higher satisfaction with life.
-
-```{r, ECHO = TRUE}
-
-```
+The scatterplot data showed very little correlation when comparing HDI with the SWLS mean data.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those living in more highly developed nations do have a slightly higher satisfaction with life.
 
 ## Spatial Analysis
 
 ```{r, ECHO = TRUE}
 #Importing map.world data into environment to circumvent knitr's issues about environmental datasets
-localmap.world<-read.csv("map.world.csv", header=TRUE)
+localmap.world<-read.csv("~/6306DoingDataScience/6306CaseStudy2/Data/map.world.csv", header=TRUE)
 
 #Create new dataframe that contains Country and Means for each Procrastination Index used in Maps
 newmap<-as.data.frame(unique(localmap.world$region))
