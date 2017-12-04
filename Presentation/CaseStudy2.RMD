@@ -6,9 +6,32 @@ output:
     html_document:
         keep_md: yes
 ---
-# Introduction
+# Abstract
+---
+The study described in this proposal seeks to analyze procrastination and developmentnal data by country in order to better understand the statistical ties between the two and the spatial distribution across the globe.  The goal of this study is to provide clients useful information to avoid large overhead costs due to procrastination costs.
 
-## Requried Libraries
+# Introduction
+---
+[Recent reports](https://www.cnbc.com/id/46750183) state that the average cost of procrastination to businesses stands at an estimated $10,396 per employee per year.  As the world economy recovers from the recession, businesses the globe over are moving to open locations in exploding markets to gain access to valuable resources and assets to expand their reach.  Many of these hot regions exist in developing regions that are underserved by their governments.  Procrastination is known to be highly correlated with anxiety and access to necessary quality of life components such as food and housing.   Of particular interest to any business seeking to expand globally should be the levels of procrastination and the relationship to various developmental indices.  Afterall, a productive worker is a happy worker and a happy worker stays highly engaged over the course the work period reducing overheard cost to business!
+
+Businesses requesting this analysis will be treated to a study of the spatial relationships and distributions of procrastination and human development.  This analysis will look at how procrastination rates and development patterns are distributed across the globe and look at the spatial distributions of the various procrastination scale average for participating countries and human development. The spatial interpretation of data will inform readers of hot spots of high and low procrastination rates.
+
+This study will also perform basic statistical analysis to better understand and interpret both the spatial data and the underlying procrastination data as well.  The findings will inform readers on the distributions of the data and allow them to look at the included maps to determine which countries lie above or below mean values as well as determine underlying relationships between various procrastination indices and several other factors such as human development, occupation, gender, age, and income.
+
+Fundamentally, this study will seek to answer the following questions:
+
+* What is the mean AIP, GP, SWLS, and DP for each country?
+* What is the HDI for each country?
+* What demographic relationships exist with procrastination?
+* Are there any relationships between the procrastination indices and HDI?
+
+International businesses must find locations with the greatest productivity to ensure they minimize these costs on their pocket-book.  Several indices exist to track procrastination, which is correlated strongly with anxiety, unhappiness, and lack of access to resources.  Using commonly available data we can show which countries have high rates of procrastination and attempt to point clients towards regions of the world with lower procrastination rates but also abundant resources.
+
+## Scope
+---
+The scope of this analytical research is limited to the data initially scrapped for research.  As such the scope of the data pertains to 2016 UN HDI data and procrastination survey responses from 4264 individuals representing only 86 of the officially recognized 193 countries.  The survey responses only required procrastination indices to be completed, other demigraphic data was optional and as such, some countries, groups, or occupations may be under represented.
+
+## Required Libraries
 ```{r, ECHO = TRUE, message = FALSE}
 library(rvest)
 library(stringr)
@@ -16,7 +39,26 @@ library(ggplot2)
 library(knitr)
 library(dplyr)
 library(plyr)
+library(maps)
 ```
+
+The analysis performed by this study was created using R, a free statistical programming environment available [here.](https://www.r-project.org/) In order to recreate the research these R packages must be installed and called into the environment.
+
+# About the Data
+---
+The data in this project consists of two primary files: Procrastination.csv and HumanDevelopmentIndex.csv. Procrastination.csv contains 4265 observations of survey participants and captures 61 variables that include demographic data and various procrastination index responses. HumanDevelopmentIndex.csv contains 191 records with 3 variables that capture the HDI score, category, and the country for whom the score is calculated. Both tables contain headers. Procrastination.csv comes from an online survey response while HumanDevelopmentIndex.csv was scrapped manually from Wikipedia.
+
+The procrastination data in-particular required a great deal of cleaning to make it useful for analysis. Most of teh column names required renaming to remove long names or clarify the intent of the variable. Several non-sensical responses for various fields were removed entirely and treated as missing values. The occupation variable field proved especially troublesome as most open text fields end up. Many "like" occupations were merged together however due to the nature of free text fields there were simply too many unique fields to collapse further without removing meaningful information. Eventually the two tables are merged together using the Country variable.
+
+## Data Source
+---
+The Human Development Index (HDI) data comes from [Wikipedia](https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries).  This data in turn comes from a United Nations report as indicated on the Wikipedia website and listed below.
+
+1. "Human Development Report 2016 - "Human Development for Everyone"" (PDF). HDRO (Human Development Report Office) United Nations Development Programme. pp. 198-201. Retrieved 2 September 2017.
+
+## Data Integrity
+---
+
 
 ## Tidying The Qualtrics Data
 ```{r, ECHO = TRUE}
@@ -192,6 +234,10 @@ kable(tidydata1[1:5, c(1:3,9,64:67)], format = "markdown",
       caption = "First Five Rows of Tidy Data")
 ```
 
+# Analysis
+
+## Statistical Analysis
+
 ## Exploratory Data Analysis
 ```{r, ECHO = TRUE}
 # 4a. Based on average retirement ages worldwide, source https://tradingeconomics.com/country-list/retirement-age-men, decided to remove all data
@@ -358,3 +404,11 @@ The scatterplot data showed very little correlation when comparing the Human Dev
 ```{r, ECHO = TRUE}
 
 ```
+
+## Spatial Analysis
+
+# Summary & Conclusions
+
+## Additional Research
+
+## What's Next?
