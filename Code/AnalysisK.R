@@ -93,7 +93,7 @@ dpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary 
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 
 swlsmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
-  geom_map(aes(fill=SWLSMean), localmap=map.world)+         #sets the fill value that will determine color and the geographic map data
+  geom_map(aes(fill=SWLSMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
   expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
   #coord_map()+                        #Sets the base geographic projection (mercator in this case)
   coord_equal()+
