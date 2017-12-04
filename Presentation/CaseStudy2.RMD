@@ -60,14 +60,25 @@ The Human Development Index (HDI) data comes from [Wikipedia](https://en.wikiped
 ---
 
 
-## Tidying The Qualtrics Data
-```{r, ECHO = TRUE}
-#Data Ingest and initialization
-rawdata<-read.csv("~/6306DoingDataScience/6306CaseStudy2/Data/Procrastination.csv", header=TRUE)
-
+```{r, echo=TRUE}
 #2a. Output Rows and Columns
 nrow(rawdata)
 ncol(rawdata)
+
+#Diagnostic outputs to generate the number of NA's
+NATidy<-sapply(rawdata, function(y) sum(length(which(is.na(y)))))
+NATidy
+
+#Diagnostic outputs to generate the number of Blank string fields
+BlankTidy<-sapply(rawdata, function(y) table(as.character(y)=="")["TRUE"])
+BlankTidy<-BlankTidy[c("Gender.TRUE", "Kids.TRUE", "Edu.TRUE", "Work.Status.TRUE", "Current.Occupation.TRUE", "Community.size.TRUE", "Country.of.residence.TRUE", "Marital.Status.TRUE")]
+
+```
+
+## Tidying The Qualtrics Data
+```{r, ECHO = TRUE}
+#Data Ingest and initialization
+rawdata<-read.csv("Procrastination.csv", header=TRUE)
 
 #Assigning to new variable.  This is done to make it easier to go back to clean data without importing again.
 tidydata<-rawdata
@@ -173,14 +184,6 @@ tidydata$GPMean <- rowMeans(subset(tidydata, select = c(GP1, GP2, GP3, GP4, GP5,
 tidydata$SWLSMean <- rowMeans(subset(tidydata, select = c(SWLS1, SWLS2, SWLS3, SWLS4, SWLS5)), na.rm = TRUE)
 tidydata$AIPMean<-round(tidydata$AIPMean, digits=0) #Due to math calculations the decimal place of AIP is more than the mean columns of the others.  For consistency it is shortned to match the others.
 
-#3b.  Export tidydata to csv.  Includes HDI.
-write.csv(tidydata, "tidydata.csv")
-
-#Diagnostic outputs to generate the number of NA's, summary statistics for the data frame, and verify the structure.
-NATidy<-sapply(tidydata, function(y) sum(length(which(is.na(y)))))
-#summary(tidydata)
-#str(tidydata)
-NATidy
 ```
 
 ## HDI Data Scraping
@@ -232,6 +235,10 @@ write.csv(HDI_df2, "~/6306DoingDataScience/6306CaseStudy2/Data/HumanDevelopmentI
 tidydata1 <- merge(HDI_df2, tidydata, by = "Country", all = TRUE)
 kable(tidydata1[1:5, c(1:3,9,64:67)], format = "markdown",
       caption = "First Five Rows of Tidy Data")
+
+#6b.  Export tidydata to csv.  Includes HDI.
+write.csv(tidydata1, "tidydataHDI.csv")
+
 ```
 
 # Analysis
@@ -406,6 +413,97 @@ The scatterplot data showed very little correlation when comparing the Human Dev
 ```
 
 ## Spatial Analysis
+
+```{r, ECHO = TRUE}
+#Importing map.world data into environment to circumvent knitr's issues about environmental datasets
+localmap.world<-read.csv("map.world.csv", header=TRUE)
+
+#Create new dataframe that contains Country and Means for each Procrastination Index used in Maps
+newmap<-as.data.frame(unique(localmap.world$region))
+colnames(newmap)<-c("Country")
+HDI_Means<-aggregate(tidydata18_67[, c("GPMean", "DPMean", "AIPMean", "SWLSMean")], list(tidydata18_67$Country), mean, na.rm=TRUE)    #Creates a new object which stores the mean GP, DP, AIP, and SWLS by country
+colnames(HDI_Means)<-c("Country","GPMean", "DPMean", "AIPMean", "SWLSMean")
+
+mapdata<-merge(newmap, HDI_Means, by="Country", all.x=TRUE, all.y=TRUE)
+mapdata$Country<-sort(mapdata$Country)
+
+#Cleaning up Names to match necessary names in localmap.world (United States -> US, United Kingdom->UK, Antigua & Barbuda->Antigua) and removing duplicate rows
+mapdata$Country[255]<-mapdata$Country[241]
+mapdata$Country[254]<-mapdata$Country[237]
+mapdata$Country[257]<-mapdata$Country[9]
+mapdata<-mapdata[-c(9, 237, 241),]
+
+#Generating Maps for AIPMean, GPMean, SWLSMean, and DPMean
+aipmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+  geom_map(aes(fill=AIPMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
+  #coord_map()+                        #Sets the base geographic projection (mercator in this case)
+  coord_equal()+
+  scale_x_continuous(breaks=NULL)+
+  scale_y_continuous(breaks=NULL)+
+  labs(x = "", y = "") +
+  ggtitle("Mean Adult Inventory of Procrastination Scores (AIP) by Country") + # Sets the title of the map
+  scale_fill_gradient(low = "antiquewhite", high = "darkred", space = "Lab", na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="AIPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
+
+gpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+  geom_map(aes(fill=GPMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
+  #coord_map()+                        #Sets the base geographic projection (mercator in this case)
+  coord_equal()+
+  scale_x_continuous(breaks=NULL)+
+  scale_y_continuous(breaks=NULL)+
+  labs(x = "", y = "") +
+  ggtitle("Mean General Procrastination (GP) by Country") + # Sets the title of the map
+  scale_fill_gradient(low = "antiquewhite", high = "navyblue", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="GPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
+
+dpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+  geom_map(aes(fill=DPMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
+  #coord_map()+                        #Sets the base geographic projection (mercator in this case)
+  coord_equal()+
+  scale_x_continuous(breaks=NULL)+
+  scale_y_continuous(breaks=NULL)+
+  labs(x = "", y = "") +
+  ggtitle("Mean Decisional Procrastination (DP) by Country") + # Sets the title of the map
+  scale_fill_gradient(low = "antiquewhite", high = "darkgreen", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="DPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
+
+swlsmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary key to link map and data
+  geom_map(aes(fill=SWLSMean), map=localmap.world)+         #sets the fill value that will determine color and the geographic map data
+  expand_limits(x=localmap.world$long, y=localmap.world$lat)+ #Sets the latitude and longitudinal extents
+  #coord_map()+                        #Sets the base geographic projection (mercator in this case)
+  coord_equal()+
+  scale_x_continuous(breaks=NULL)+
+  scale_y_continuous(breaks=NULL)+
+  labs(x = "", y = "") +
+  ggtitle("Mean Satisfaction of Life (SWLS) by Country") + # Sets the title of the map
+  scale_fill_gradient(low = "antiquewhite", high = "darkorange4", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="SWLS",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
+  theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
+  borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
+```
+
+```{r, ECHO = TRUE}
+aipmap 
+```
+
+```{r, ECHO = TRUE}
+gpmap
+```
+
+```{r, ECHO = TRUE}
+dpmap
+```
+
+```{r, ECHO = TRUE}
+swlsmap
+```
+
+![HDI Development](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Presentation/HDI_Graphic.PNG "HDI")
 
 # Summary & Conclusions
 
