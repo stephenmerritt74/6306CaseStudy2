@@ -1,20 +1,20 @@
 library(ggplot2)
 library(maps)
 
-localmap.world<-read.csv("map.world.csv", header=TRUE)
-
 #5c Generating Visualization of AIP by HDI
-topfifteen <- tidydata18_67[,c("Country", "AIPMean", "HDI")]
-topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
-                       c("Country", "AIPMean", "HDI"))
-topfifteen <- topfifteen[order(-topfifteen$AIPMean), ]
-topfifteen$HumanDev<- cut(topfifteen$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
-levels(topfifteen$HumanDev) <- c("Low human development", "Medium human development", 
+
+#Creating dataframe of HDI and AIPMean by Country
+topfifteenAIP <- aggregate(tidydata18_67[, c("AIPMean", "HDI")], list(tidydata18_67$Country), mean, na.rm=TRUE) 
+colnames(topfifteenAIP)<-c("Country", "AIPMean", "HDI")
+
+#Reordering dataframe by AIPMean in Descending Order
+topfifteenAIP <- topfifteen[order(-topfifteenAIP$AIPMean), ]
+topfifteenAIP$HumanDev<- cut(topfifteenAIP$HDI, c(-Inf, 0.549, 0.699, 0.799, Inf))
+levels(topfifteenAIP$HumanDev) <- c("Low human development", "Medium human development", 
                                  "High human development", "Very high human development")
-topfifteen <- topfifteen[(1:15), ]
+topfifteenAIP2 <- topfifteenAIP[(1:15), ]
 theme_update(plot.title = element_text(hjust = 0.5))
-ggplot(topfifteen, aes(x = reorder(Country, AIPMean), y = AIPMean, 
-                       fill = HumanDev)) + 
+ggplot(topfifteenAIP2, aes(x = reorder(Country, AIPMean), y = AIPMean, fill = HumanDev)) + 
   geom_bar(stat = "identity", width = 0.5) + 
   ggtitle("Top Fifteen Countries for Adult Inventory of Procrastination (AIP) Mean") +
   labs(x = "Country", y = "AIP Mean") +
@@ -32,24 +32,25 @@ cor(tidydata18_67$AnnIncome, tidydata18_67$Age, method = "pearson", use="na.or.c
 #Generate Linear Model & Display Statistics
 AgeIncome<-lm(AnnIncome~Age, data=na.omit(tidydata))
 
+#Output Linear Model results
 summary(AgeIncome)
 
-#Create new dataframe that contains Country and Means for each Procrastination Index used in Maps
+#Importing map.world data into environment to circumvent knitr's issues about environmental datasets
+localmap.world<-read.csv("map.world.csv", header=TRUE)
 
-newtest<-as.data.frame(unique(map.world$region))
-colnames(newtest)<-c("Country")
+#Create new dataframe that contains Country and Means for each Procrastination Index used in Maps
+newmap<-as.data.frame(unique(localmap.world$region))
+colnames(newmap)<-c("Country")
 HDI_Means<-aggregate(tidydata18_67[, c("GPMean", "DPMean", "AIPMean", "SWLSMean")], list(tidydata18_67$Country), mean, na.rm=TRUE)    #Creates a new object which stores the mean GP, DP, AIP, and SWLS by country
 colnames(HDI_Means)<-c("Country","GPMean", "DPMean", "AIPMean", "SWLSMean")
 
-mapdata<-merge(newtest, HDI_Means, by="Country", all.x=TRUE, all.y=TRUE)
+mapdata<-merge(newmap, HDI_Means, by="Country", all.x=TRUE, all.y=TRUE)
 mapdata$Country<-sort(mapdata$Country)
 
+#Cleaning up Names to match necessary names in localmap.world (United States -> US, United Kingdom->UK, Antigua & Barbuda->Antigua) and removing duplicate rows
 mapdata$Country[255]<-mapdata$Country[241]
-
 mapdata$Country[254]<-mapdata$Country[237]
-
 mapdata$Country[257]<-mapdata$Country[9]
-
 mapdata<-mapdata[-c(9, 237, 241),]
 
 #Generating Maps for AIPMean, GPMean, SWLSMean, and DPMean
@@ -61,7 +62,7 @@ aipmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary
   scale_x_continuous(breaks=NULL)+
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
-  ggtitle("AIPMean by Country") + # Sets the title of the map
+  ggtitle("Mean Adult Inventory of Procrastination Scores (AIP) by Country") + # Sets the title of the map
   scale_fill_gradient(low = "antiquewhite", high = "darkred", space = "Lab", na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="AIPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
   theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
@@ -74,7 +75,7 @@ gpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary 
   scale_x_continuous(breaks=NULL)+
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
-  ggtitle("GPMean by Country") + # Sets the title of the map
+  ggtitle("Mean General Procrastination (GP) by Country") + # Sets the title of the map
   scale_fill_gradient(low = "antiquewhite", high = "navyblue", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="GPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
   theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
@@ -87,7 +88,7 @@ dpmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primary 
   scale_x_continuous(breaks=NULL)+
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
-  ggtitle("DPMean by Country") + # Sets the title of the map
+  ggtitle("Mean Decisional Procrastination (DP) by Country") + # Sets the title of the map
   scale_fill_gradient(low = "antiquewhite", high = "darkgreen", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="DPMean",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
   theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
@@ -100,7 +101,7 @@ swlsmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primar
   scale_x_continuous(breaks=NULL)+
   scale_y_continuous(breaks=NULL)+
   labs(x = "", y = "") +
-  ggtitle("SWLSMean by Country") + # Sets the title of the map
+  ggtitle("Mean Satisfaction of Life (SWLS) by Country") + # Sets the title of the map
   scale_fill_gradient(low = "antiquewhite", high = "darkorange4", space = "Lab",na.value = "gray80", guide=guide_colourbar(title.position="top", barwidth=10, title="SWLS",  title.hjust=0.5))+     #contols legend elements such as color gradiant, colors for NA values, and the size of the legend bar
   theme(plot.title = element_text(lineheight=.8, face="bold"),legend.position=c(.15, .25),legend.direction="horizontal",panel.background=element_blank(), panel.border=element_rect(colour="Grey50", fill=NA, size=2))+   #Theme elements such as the border around the map plot, the position of map components like the legend
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
