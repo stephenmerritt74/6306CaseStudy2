@@ -582,15 +582,13 @@ HDI, or Human Development Index is a multivariate statistic created by the Unite
 (Image source is Pinterest.  Author is [Happenstance](https://commons.wikimedia.org/wiki/User_talk:Happenstance))
 
 # Summary & Conclusions
+From the beginning, we set out to answer three primary questions when analyzing various procrastination indices vs. human development data:
+
 * What is the mean AIP, GP, SWLS, and DP for each country?
-    * The range of the top 15 for AIP is (3.6(Poland) - 3.222(Belgium)) 
-    * The range of the top 15 for GP is (3.79(Poland) = 3.44(Hong Kong))
 * What is the HDI for each country?
-    * The range for HDI .949(Norway) - .352(Central African Republic)
 * Are there any relationships between the procrastination indices and HDI?
-    * 12 of the top 15 nations for GP Mean and 13 of the top 15 nations for AIP mean were categorized as having very high human development
-    * 77% of the population of both top-15 lists come from European nations
-    * While the numerical SWLS and HDI data did not correlate, when binning SWLS mean data among the four levels of human development, the countries with very high human development score a point higher than countries with low human development for SWLS mean (3.04 compared to 2.07)
+
+Norway tops the list of highly developed nations with a HDI of 0.949, and Central Africa Republic rounds out the list with a HDI of 0.352.  When analyzing the top-15 countries for both AIP and GP, Poland tops both lists of countries with a GP Mean of 3.79 and AIP mean of 3.6.  The range for GP of the top-15 countries is from 3.79 (Poland) and 3.44(Hong Kong).  The range for AIP for the top-15 countries is from 3.6 (Poland) to 3.222 (Belgium).  Both GP and AIP positively correlate with high human development with 12 of the top-15 nations for GP and 13 of the top-15 for AIP being categorized as having very high human development.  77% of the population of both top-15 lists come from European nations, which on the surface appeared to be a hot spot for high procrastination index scores, however, the data is not conclusive on that point due to the low response numbers for other nations.  We also looked at how satisfaction with life (a possible contributing factor to procrastination) compared with the Human Development Index.  While the numerical SWLS and HDI data did not correlate, when binning SWLS mean data among the four levels of human development, the countries with very high human development score a point higher than countries with low human development for SWLS mean (3.04 compared to 2.07)
 
 ## Additional Research
 This proposal hits upon the highlights of the relationships between procrastination and human development and indicates a few reasons why this might be important to businesses, investors, and government aid institutions.  Further research could be provided, at cost, to generate better data with which to provide more robust samples for every region of the world, including the regions underserved by the data presented here.  Additionally, many other avenues of research can be followed depending upon the exact desires of clients such as:

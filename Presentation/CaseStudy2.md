@@ -8,7 +8,7 @@ The study described in this proposal seeks to analyze procrastination and develo
 
 # Introduction
 ---
-[Recent reports](https://www.cnbc.com/id/46750183) state that the average cost of procrastination to businesses stands at an estimated $10,396 per employee per year.  As the world economy recovers from the recession, businesses the globe over are moving to open locations in exploding markets to gain access to valuable resources and assets to expand their reach.  Many of these hot regions exist in developing regions that are underserved by their governments.  Procrastination is known to be highly correlated with anxiety and access to necessary quality of life components such as food and housing.   Of particular interest to any business seeking to expand globally should be the levels of procrastination and the relationship to various developmental indices.  Afterall, a productive worker is a happy worker and a happy worker stays highly engaged over the course the work period reducing overheard cost to business!
+[Recent reports](https://www.cnbc.com/id/46750183) state that the average cost of procrastination to businesses stands at an estimated $10,396 per employee per year.  As the world economy recovers from the recession, businesses the globe over are moving to open locations in exploding markets to gain access to valuable resources and assets to expand their reach.  Many of these hot regions exist in developing regions that are underserved by their governments.  Procrastination is known to be highly correlated with anxiety and access to necessary quality of life components such as food and housing.   Of particular interest to any business seeking to expand globally should be the levels of procrastination and the relationship to various developmental indices.  After all, a productive worker is a happy worker and a happy worker stays highly engaged over the course the work period reducing overheard cost to business!
 
 Businesses requesting this analysis will be treated to a study of the spatial relationships and distributions of procrastination and human development.  This analysis will look at how procrastination rates and development patterns are distributed across the globe and look at the spatial distributions of the various procrastination scale average for participating countries and human development. The spatial interpretation of data will inform readers of hot spots of high and low procrastination rates.
 
@@ -24,7 +24,7 @@ International businesses must find locations with the greatest productivity to e
 
 ## Scope
 ---
-The scope of this analytical research is limited to the data initially scrapped for research.  As such the scope of the data pertains to 2016 UN HDI data and procrastination survey responses from 4264 individuals representing only 86 of the officially recognized 193 countries.  The survey responses only required procrastination indices to be completed, other demigraphic data was optional and as such, some countries, groups, or occupations may be under represented.
+The scope of this analytical research is limited to the data initially scrapped for research.  As such the scope of the data pertains to 2016 UN HDI data and procrastination survey responses from 4264 individuals representing only 86 of the officially recognized 193 countries.  The survey responses only required procrastination indices to be completed, other demographic data was optional and as such, some countries, groups, or occupations may be under represented.
 
 ## Required Libraries
 
@@ -62,7 +62,7 @@ The Human Development Index (HDI) data comes from [Wikipedia](https://en.wikiped
 
 ## Data Integrity
 ---
-The original data provided in procrastination.csv was gathered from a survey with multiple open text fields.  Additionally due to desired anonymity only the procrastination responses were mandatory fields.  As such, the condition of teh data necessitates quote a bit of cleaning in order to perform any analysis work and provide clear and useful analysis.
+The original data provided in procrastination.csv was gathered from a survey with multiple open text fields.  Additionally, due to desired anonymity only the procrastination responses were mandatory fields.  As such, the condition of the data necessitates quote a bit of cleaning in order to perform any analysis work and provide clear and useful analysis.
 
 
 ```r
@@ -90,7 +90,7 @@ ncol(rawdata)
 
 The first step in tidying any data is to look at the data and figure out what is present and then evaluate what transformations needs to occur to make the data useful.
 
-At first glance we see a dataframe sctructure of 4264 observations with 61 separate variables.  These variables include 2 numeric, 12 factors, and 47 integer variables.  Many of the factors include NULL strings.  Some of the integers and numerics include NAs.  Both will affect analysis so it is important to understand how many of each are present in the data.
+At first glance we see a dataframe structure of 4264 observations with 61 separate variables.  These variables include 2 numeric, 12 factors, and 47 integer variables.  Many of the factors include NULL strings.  Some of the integer and numeric variables include NAs.  Both will affect analysis so it is important to understand how many of each are present in the data.
 
 
 ```r
@@ -103,9 +103,9 @@ BlankTidy<-sapply(rawdata, function(y) table(as.character(y)=="")["TRUE"])
 BlankTidy<-BlankTidy[c("Gender.TRUE", "Kids.TRUE", "Edu.TRUE", "Work.Status.TRUE", "Current.Occupation.TRUE", "Community.size.TRUE", "Country.of.residence.TRUE", "Marital.Status.TRUE")]
 ```
 
-Many of the integers and numeric variables contain NAs.  For some, such as the tenure in years and months, this is likely not an issue.  Some respondants likely left one or the other blank due to inherent rounding that takes place.  However, enough individuals left Age and Annual Income blank that it may affect analysis later.  Particularly if a country with small sample size left it blank it may skew analysis results in those countries.
+Many of the integers and numeric variables contain NAs.  For some, such as the tenure in years and months, this is likely not an issue.  Some respondents likely left one or the other blank due to inherent rounding that takes place.  However, enough individuals left Age and Annual Income blank that it may affect analysis later.  Particularly if a country with small sample size left it blank it may skew analysis results in those countries.
 
-Likewise, the blank character fields or levels in a factor pose similar issues that might cause analysis to skew in countries with a low number of respondants.  Roughly only half of respondants chose to fill out the occupation field.  Most of the other fields saw some blank strings too, but at a far less significant rate.
+Likewise, the blank character fields or levels in a factor pose similar issues that might cause analysis to skew in countries with a low number of respondents.  Roughly only half of respondents chose to fill out the occupation field.  Most of the other fields saw some blank strings too, but at a far less significant rate.
 
 ## Tidying The Qualtrics Data
 
@@ -126,7 +126,7 @@ char<-c("Gender", "Kids", "Education", "WorkStatus", "Occupation", "CommSize", "
 tidydata[char] <- sapply(tidydata[char], as.character) #All columns in char are converted to character fields.
 ```
 
-The nonsensical or overdescriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the github repository.
+The nonsensical or over descriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the GitHub repository.
 
 
 ```r
@@ -215,11 +215,11 @@ tidydata$Occupation<-gsub("\\Pca\\b", "PCA", tidydata$Occupation)
 
 After the initial evaluation of the data to better understand the distribution of NAs and missing character strings and cleaning up the variable names it came time to sort out the significant data issues pertinent to analysis.
 
-Several variables contained coded values that were likley generated by collection software to indicate NULL values.  These could include 999, 0, or negative values.  All of these were recoded as either a missing string or an NA as appropriate to the variable format.
+Several variables contained coded values that were likely generated by collection software to indicate NULL values.  These could include 999, 0, or negative values.  All of these were recoded as either a missing string or an NA as appropriate to the variable format.
 
 Several variables were the wrong structure type and this needed correction in order to allow for proper analysis.  Age allowed for fractional values rather than only whole integers so the values were rounded down.  The Sons and Daughters fields were both factors and Sons had a number of odd values that appear to have carried over from the gender field.  These coded values were recoded correctly and both were converted to integers since partial children shouldn't exist in the real world.
 
-The Country variable contained two issues.  The first issue were numerous mispellings of countries which were easily corrected.  The second was a potential mismatch with the Country field of the HDI data scrapped later in this analysis.  Such conflicts were renamed in favor of the HDI data.  Some values did not exist in the HDI data because they are not separate countries so these territories, such as Guam, were rolled into their parent nation.
+The Country variable contained two issues.  The first issue were numerous misspellings of countries which were easily corrected.  The second was a potential mismatch with the Country field of the HDI data scrapped later in this analysis.  Such conflicts were renamed in favor of the HDI data.  Some values did not exist in the HDI data because they are not separate countries so these territories, such as Guam, were rolled into their parent nation.
 
 The occupation field required the most work and still remains of dubious value.  With over 600 unique occupations in the untidied dataset due to the nature of open text fields, we wanted to make the field more legible but not filter out the usefulness of individual respondents.  As such the many garbage responses such as "Fdsdf", "Ouh", or "Please Specify" were recoded as missing values.    Where possible common words were used to collapse like jobs together.  Examples include "Teacher", "Faculty", and "Professor" collapsing down into "Educator".  Several other typos and translation issues were corrected but the end result is still roughly 500 unique occupations.
 
@@ -235,7 +235,7 @@ tidydata$SWLSMean <- rowMeans(subset(tidydata, select = c(SWLS1, SWLS2, SWLS3, S
 tidydata$AIPMean<-round(tidydata$AIPMean, digits=0) #Due to math calculations the decimal place of AIP is more than the mean columns of the others.  For consistency it is shortned to match the others.
 ```
 
-Finally, a mean score of AIP, DP, GP, and SWLS were generated for each respondant.  These would be used in later spatial and statistical analysis.
+Finally, a mean score of AIP, DP, GP, and SWLS were generated for each respondent.  These would be used in later spatial and statistical analysis.
 
 ## HDI Data Scraping
 
@@ -304,13 +304,18 @@ kable(tidydata1[1:5, c(1:3,9,64:67)], format = "markdown",
 write.csv(tidydata1, "tidydataHDI.csv")
 ```
 
-Scraping the data from [Wikipedia](https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries) presented a unique challenge to determine which of the multiple HTML tables contained the appropriate HDI data.  HTML tables 4,5,7,8,10,11,13, and 14 contained the desired data, necessitating a loop to ensure data set integrity.  The output was not clean, with the country data coming in 2 separate columns that were offset from one another and with different column names.  Ultimately, it was necessary to create a separate dataset containing only the country column, and then combine that data with the original HDI data and subset the columns appropriately.  The resulting HumanDevelopmentIndex.csv contains HDI and HDI level data for 189 distinct countries.  This data is ulitmately combined with the tidy data from the survey for further analysis.
+Scraping the data from [Wikipedia](https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries) presented a unique challenge to determine which of the multiple HTML tables contained the appropriate HDI data.  HTML tables 4,5,7,8,10,11,13, and 14 contained the desired data, necessitating a loop to ensure data set integrity.  The output was not clean, with the country data coming in 2 separate columns that were offset from one another and with different column names.  Ultimately, it was necessary to create a separate dataset containing only the country column, and then combine that data with the original HDI data and subset the columns appropriately.  The resulting HumanDevelopmentIndex.csv contains HDI and HDI level data for 189 distinct countries.  This data is ultimately combined with the tidy data from the survey for further analysis.
 
 # Analysis
+---
 
 ## Statistical Analysis
+---
+Below are the statistical results of analysis when looking deeper into the procrastination question concerning developmental countries.  As a reminder, the survey data proves rather poor for this analysis due to inconsistent responses, missing data, and low sample size for many regions of the world.
 
 ## Exploratory Data Analysis
+---
+
 
 ```r
 # 4a. Based on average retirement ages worldwide, source https://tradingeconomics.com/country-list/retirement-age-men, decided to remove all data
@@ -334,7 +339,7 @@ funcsummary <- function(x, property){
 }
 ```
 
-After considering the available range of ages that could be examined with the survey results, we decided to keep all data for men and women between ages 18 and 67.5.  According to recent world [retirement](http://chartsbin.com/view/2466) age data, this subset selection appeared most appropriate.  The next lowest age cutoff would have been at 55, which would have eliminated a significant amount of the population.
+After considering the available range of ages that could be examined with the survey results, we decided to keep all data for men and women between ages 18 and 67.  According to recent world [retirement](http://chartsbin.com/view/2466) age data, this subset selection appeared most appropriate.  The next lowest age cutoff would have been at 55, which would have eliminated a significant amount of the population.
 
 ### Summary Statistics for Age
 
@@ -431,7 +436,7 @@ hist(tidydata18_67$GPMean, col = "blue3", main = "Histogram of the General Procr
 
 ![](CaseStudy2_files/figure-html/unnamed-chunk-16-2.png)<!-- -->
 
-When reviewing annual income data in a histogram, we find that it is right skewed with the vast majority of the responses being at or below $50,000 per year.  The GP mean historgram is left skewed with the majority of mean GP scores being 3 or above.
+When reviewing annual income data in a histogram, we find that it is right skewed with the vast majority of the responses being at or below $50,000 per year.  The GP mean histogram is left skewed with the majority of mean GP scores being 3 or above.
 
 
 ```r
@@ -716,7 +721,7 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 |TRUE    |  2828|
 
 ### EDA Results
-The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  51 of the 84 countries represented with responses had under 5 total responses.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified as "assistants".  57% of the respondents were women and 70% of the respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
+The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  51 of the 84 countries represented with responses had under 5 total responses.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified as "assistants".  57% of the respondents were women and 70% of the respondents perceptions of their own propensity to procrastinate or not procrastinate matched the perceptions of others.  
 
 ## Top Fifteen Nations for AIP and GP (minimum 5 responses)
 
@@ -824,8 +829,11 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for Adult Inv
 write.csv(topfifteen, "~/6306DoingDataScience/6306CaseStudy2/Data/top15AIP.csv", row.names = FALSE)
 ```
 
-When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We dediced to set a new threshold, requiring at least five respondents to be considered in the top-15 list.  This caused a drastic change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.  European nations dominated both top-15 lists, with European nations owning the top seven spots for GP, and top three spots for AIP.  European nations comprised 23 of the 30 spots on both top-15 lists (~77%)
+When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We decided to set a new threshold, requiring at least five respondents to be considered in the top-15 list.  This caused a drastic change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.  European nations dominated both top-15 lists, with European nations owning the top seven spots for GP, and top three spots for AIP.  European nations comprised 23 of the 30 spots on both top-15 lists (~77%)
 
+A high AIP score strongly correlates to high development of a country.  There are no countries of low human development in the top 15 and only 1/5 of the respondents are of medium development.  Fully 1/3 of the top 15 are very highly developed.  Interestingly enough 1/3 of the top 15 in AIP are island nations.
+
+## Age versus Annual Income
 
 ```r
 #5d Answering relationship of Age vs. Income
@@ -873,6 +881,8 @@ summary(AgeIncome)
 ## Multiple R-squared:  0.1319,	Adjusted R-squared:  0.1317 
 ## F-statistic: 546.7 on 1 and 3598 DF,  p-value: < 2.2e-16
 ```
+
+The scatterplot in general shows a regular dispersion of points and a fit line with a positive slope.  This indicates there is some correlation between the two.  However, when running the linear regression modeling we can see that while age and annual income are indeed correlated with a low p-value, the adjusted R-squared value shows that Age explains only 13% of the variation in Annual Income.  
 
 ## HDI vs. SWLS comparison
 
@@ -994,12 +1004,16 @@ swlsmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primar
   borders(database="world", regions=".", fill=NA, colour="grey25", xlim=NULL, ylim=NULL)
 ```
 
+By piecing together the survey data with other available geospatial data we can build maps of the globe to better depict areas of high procrastination.  One must be cautious in interpreting the values here though.  As presented in the data section, many countries contain only a single respondent and thus not a sample size that can be considered representative of the population.  Nonetheless, these maps of global distribution of means can show potential trends and, using further analysis, depict a clearer picture where procrastination may cause resource issues and incur greater operating costs.
+
 
 ```r
 aipmap 
 ```
 
 ![](CaseStudy2_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+
+This map of mean Adult Inventory of Procrastination scores by country shows the global distribution of time usage variables.  It measures the chronic tendency to put off tasks in various situations.  In general, a higher score means greater tendency towards procrastination as shown in the codebook (which lists all questions given in the survey).  We see that the middle east and northern South America as well as Burma and Ethiopa score high on AIP.  Europe also appears higher than the global average while southern South America and the few other participating African countries show lower mean AIP scores.
 
 
 ```r
@@ -1008,12 +1022,16 @@ gpmap
 
 ![](CaseStudy2_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
+GP, or the General Procrastination scale tries to measure common characteristics of procrastinators and a high score here indicating behavior tendencies.  Russia and the Pacific states of South America show lower mean scores of GP.  In general, it appears that there is a relationship between high development and GP.  The greater the development the higher the GP.
+
 
 ```r
 dpmap
 ```
 
 ![](CaseStudy2_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
+
+The Decisional Procrastination Scale measures how students approach decision making processes.  It attempts to provide a multivariate analysis to avoid confounding factors and a high score usually indicates high levels of avoidance.  With few exceptions, developed countries appear to show lower levels of DP.  Russia, Turkey, and Colombia are the outliers.
 
 
 ```r
@@ -1022,20 +1040,31 @@ swlsmap
 
 ![](CaseStudy2_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
 
-![HDI Development](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Presentation/HDI_Graphic.PNG "HDI")
+Satisfaction of life survey responses ask questions to determine overall global life satisfaction.  The Pacific countries of South America appear the most content along with Algeria, Pakistan and Iran.  Many European countries appear lower in the scale along with Russia and China.
+
+![HDI Development](https://i.pinimg.com/736x/03/ee/82/03ee82a37b06aa6760259d79ac4d8997--human-development-report-economic-development.jpg)
+HDI, or Human Development Index is a multivariate statistic created by the United Nations to measure the development levels of countries.  It takes into account overall health, education, accessability of housing and food, and other factors.  The number falls between 0 and 1 with the higher numbers indicating most developed.  The map clearly shows that most countries considered "1st World" nations are highly developed while traditional "3rd world countries" fall on the lower end of the spectrum.  Of particular note are the moderately low HDI scores of southern Asia.  India, Pakistan, and others who are not seen as 3rd world countries have significantly lower HDI scores than even their nearby neighbors such as China.  War-torn nations such as Afghanistan and Somalia contain no HDI indicies.  Western Sahara also contains no data, probably due to the contentious standoff between the government of Morocco and the Sahrawi Arab Democratic Republic.
+
+(Image source is Pinterest.  Author is [Happenstance](https://commons.wikimedia.org/wiki/User_talk:Happenstance))
 
 # Summary & Conclusions
+From the beginning, we set out to answer three primary questions when analyzing various procrastination indices vs. human development data:
+
 * What is the mean AIP, GP, SWLS, and DP for each country?
-    * The range of the top 15 for AIP is (3.6(Poland) - 3.222(Belgium)) 
-    * The range of the top 15 for GP is (3.79(Poland) = 3.44(Hong Kong))
 * What is the HDI for each country?
-    * The range for HDI .949(Normay) - .352(Central African Republic)
 * Are there any relationships between the procrastination indices and HDI?
-    * 12 of the top 15 nations for GP Mean and 13 of the top 15 nations for AIP mean were categorized as having very high human development
-    * 77% of the population of both top-15 lists come from European nations
-    * While the numerical SWLS and HDI data did not correlate, when binning SWLS mean data among the four levels of human development, the countries with very high human development score a point higher than countries with low human development for SWLS mean (3.04 compared to 2.07)
+
+Norway tops the list of highly developed nations with a HDI of 0.949, and Central Africa Republic rounds out the list with a HDI of 0.352.  When analyzing the top-15 countries for both AIP and GP, Poland tops both lists of countries with a GP Mean of 3.79 and AIP mean of 3.6.  The range for GP of the top-15 countries is from 3.79 (Poland) and 3.44(Hong Kong).  The range for AIP for the top-15 countries is from 3.6 (Poland) to 3.222 (Belgium).  Both GP and AIP positively correlate with high human development with 12 of the top-15 nations for GP and 13 of the top-15 for AIP being categorized as having very high human development.  77% of the population of both top-15 lists come from European nations, which on the surface appeared to be a hot spot for high procrastination index scores, however, the data is not conclusive on that point due to the low response numbers for other nations.  We also looked at how satisfaction with life (a possible contributing factor to procrastination) compared with the Human Development Index.  While the numerical SWLS and HDI data did not correlate, when binning SWLS mean data among the four levels of human development, the countries with very high human development score a point higher than countries with low human development for SWLS mean (3.04 compared to 2.07)
 
 ## Additional Research
+This proposal hits upon the highlights of the relationships between procrastination and human development and indicates a few reasons why this might be important to businesses, investors, and government aid institutions.  Further research could be provided, at cost, to generate better data with which to provide more robust samples for every region of the world, including the regions underserved by the data presented here.  Additionally, many other avenues of research can be followed depending upon the exact desires of clients such as:
+
 * What demographic relationships exist with procrastination?
+* For countries with high rates of procrastination, are the incomes commensurate with the loss of time?
+* Are there greater regional patterns for procrastination?  Why?
+* Do cultural and/or societal differences play a role in procrastination?
+* What aspects of HDI work best to lower procrastination rates?
+* Cost benefit analysis for investing in high procrastination areas and developing resources to assist workers to avoid procrastination.
 
 ## What's Next?
+Contact one of our expert program managers to set up a meeting so that we may better understand the requirements and develop a personalized proposal for your organization.  Depending on the scale and scope of research additional services may be necessary such as data collection for underserved populations in order to affect a sample size significant enough to provide meaningful analysis.  Depending on the scale of the area of interest detailed graphics can be generated after additional research to show procrastination "hot-spots".
