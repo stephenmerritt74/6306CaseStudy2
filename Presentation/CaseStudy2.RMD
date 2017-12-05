@@ -23,7 +23,6 @@ Fundamentally, this study will seek to answer the following questions:
 
 * What is the mean AIP, GP, SWLS, and DP for each country?
 * What is the HDI for each country?
-* What demographic relationships exist with procrastination?
 * Are there any relationships between the procrastination indices and HDI?
 
 International businesses must find locations with the greatest productivity to ensure they minimize these costs on their pocket-book.  Several indices exist to track procrastination, which is correlated strongly with anxiety, unhappiness, and lack of access to resources.  Using commonly available data we can show which countries have high rates of procrastination and attempt to point clients towards regions of the world with lower procrastination rates but also abundant resources.
@@ -66,7 +65,7 @@ The original data provided in procrastination.csv was gathered from a survey wit
 #Data Ingest and initialization
 rawdata<-read.csv("~/6306DoingDataScience/6306CaseStudy2/Data/Procrastination.csv", header=TRUE)
 
-str(rawdata)
+#str(rawdata)
 
 #2a. Output Rows and Columns
 nrow(rawdata)
@@ -80,7 +79,7 @@ At first glance we see a dataframe sctructure of 4264 observations with 61 separ
 ```{r, echo=TRUE}
 #Diagnostic outputs to generate the number of NA's
 NATidy<-sapply(rawdata, function(y) sum(length(which(is.na(y)))))
-NATidy
+#NATidy
 
 #Diagnostic outputs to generate the number of Blank string fields
 BlankTidy<-sapply(rawdata, function(y) table(as.character(y)=="")["TRUE"])
@@ -111,7 +110,7 @@ char<-c("Gender", "Kids", "Education", "WorkStatus", "Occupation", "CommSize", "
 tidydata[char] <- sapply(tidydata[char], as.character) #All columns in char are converted to character fields.
 ```
 
-The ridiculous nonsensical or overdescriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the github repository.
+The nonsensical or overdescriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the github repository.
 
 ```{r, echo=TRUE}
 #2c-i.  Tenure (Years of service) are rounded to the nearest integer and then converted to integers.  Finally the 999 values are converted to NAs.
@@ -276,6 +275,8 @@ write.csv(tidydata1, "tidydataHDI.csv")
 
 ```
 
+Scraping the data from [Wikipedia](https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries) presented a unique challenge to determine which of the multiple HTML tables contained the appropriate HDI data.  HTML tables 4,5,7,8,10,11,13, and 14 contained the desired data, necessitating a loop to ensure data set integrity.  The output was not clean, with the country data coming in 2 separate columns that were offset from one another and with different column names.  Ultimately, it was necessary to create a separate dataset containing only the country column, and then combine that data with the original HDI data and subset the columns appropriately.  The resulting HumanDevelopmentIndex.csv contains HDI and HDI level data for 189 distinct countries.  This data is ulitmately combined with the tidy data from the survey for further analysis.
+
 # Analysis
 
 ## Statistical Analysis
@@ -301,15 +302,40 @@ funcsummary <- function(x, property){
           caption = paste0("Summary Statisitics for ", property, sep = " "))
    
 }
+```
+
+After considering the available range of ages that could be examined with the survey results, we decided to keep all data for men and women between ages 18 and 67.5.  According to recent world [retirement](http://chartsbin.com/view/2466) age data, this subset selection appeared most appropriate.  The next lowest age cutoff would have been at 55, which would have eliminated a significant amount of the population.
+
+### Summary Statistics for Age
+```{r, ECHO = TRUE}
 funcsummary(tidydata18_67, "Age")
+```
+### Summary Statistics for Annual Income
+```{r, ECHO = TRUE}
 funcsummary(tidydata18_67, "AnnIncome")
+```
+### Summary Statistics for HDI
+```{r, ECHO = TRUE}
 funcsummary(tidydata18_67, "HDI")
+```
+### Summary Statistics for DP Mean
+```{r, ECHO = TRUE}
 funcsummary(tidydata18_67, "DPMean")
+```
+### Summary Statistics for AIP Mean
+```{r, ECHO = TRUE}
 funcsummary(tidydata18_67, "AIPMean")
+```
+### Summary Statistics for GP Mean
+```{r, ECHO = TRUE}
 funcsummary(tidydata18_67, "GPMean")
+```
+### Summary Statistics for SWLS
+```{r, ECHO = TRUE}
 funcsummary(tidydata18_67, "SWLSMean")
 ```
 
+## Annual Income and GP Mean Histograms
 ```{r, ECHO = TRUE}
 # 4b (cont.) Created a histogram for both Annual Income and General Procrastination Scale Mean
 hist(tidydata18_67$AnnIncome, col = "blue3", main = "Histogram of Annual Income",
@@ -318,8 +344,7 @@ hist(tidydata18_67$GPMean, col = "blue3", main = "Histogram of the General Procr
      xlab = "Mean of General Procastation Scale")
 ```
 
-### Histograms
-The income histogram is right skewed with the vast majority of the Income being at or below $50,000 per year.  The general procrastination historgram is left skewed with the majority of mean GP scores being 3 or above.
+When reviewing annual income data in a histogram, we find that it is right skewed with the vast majority of the responses being at or below $50,000 per year.  The GP mean historgram is left skewed with the majority of mean GP scores being 3 or above.
 
 ```{r, ECHO = TRUE}
 # 4c Created dataframes to provide the frequency of Gender, WorkStatus, and Occupation
@@ -349,9 +374,9 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 ```
 
 ### EDA Results
-The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified themselves as "assistants".  57% of the respondents were women and 70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
+The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  51 of the 84 countries represented with responses had under 5 total responses.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified as "assistants".  57% of the respondents were women and 70% of the respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
 
-## Deeper Analysis and Visualization
+## Top Fifteen Nations for AIP and GP (minimum 5 responses)
 ```{r, ECHO = TRUE}
 #5b Create a barchart for the top 15 nations in average pro
 topfifteen <- tidydata18_67[ ,c("Country", "GPMean", "HDI")]
@@ -375,10 +400,8 @@ ggplot(topfifteen, aes(x = reorder(Country, GPMean), y = GPMean,
 
 #6c Table of topfifteen nations for General Procrastiantion Mean
 kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (GP) Mean")
-```
+write.csv(topfifteen, "~/6306DoingDataScience/6306CaseStudy2/Data/top15GP.csv", row.names = FALSE)
 
-
-```{r, ECHO = TRUE}
 #5c Generating Visualization of AIP by HDI
 topfifteen <- tidydata18_67[,c("Country", "AIPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
@@ -398,10 +421,12 @@ ggplot(topfifteen, aes(x = reorder(Country, AIPMean), y = AIPMean,
   labs(x = "Country", y = "AIP Mean") +
   coord_flip() +
   scale_fill_brewer(palette = "Dark2")
-kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (AIP) Mean")
+#6c Table of topfifteen nations for AIP Mean
+kable(topfifteen, format = "markdown", caption = "Top 15 Countries for Adult Inventory Procrastination (AIP) Mean")
+write.csv(topfifteen, "~/6306DoingDataScience/6306CaseStudy2/Data/top15AIP.csv", row.names = FALSE)
 ```
 
-When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We dediced to set a new threshold of requiring at least five respondents to be considered in the top-15 list.  This caused a drastics change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.
+When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We dediced to set a new threshold, requiring at least five respondents to be considered in the top-15 list.  This caused a drastic change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.  European nations dominated both top-15 lists, with European nations owning the top seven spots for GP, and top three spots for AIP.  European nations comprised 23 of the 30 spots on both top-15 lists (~77%)
 
 ```{r, ECHO = TRUE}
 #5d Answering relationship of Age vs. Income
@@ -418,9 +443,7 @@ AgeIncome<-lm(AnnIncome~Age, data=na.omit(tidydata))
 summary(AgeIncome)
 ```
 
-
-
-
+## HDI vs. SWLS comparison
 ```{r, ECHO = TRUE}
 #5e Determine if there is a relationship between Human Development and Satisfaction With Life
 ggplot(tidydata18_67, aes(HDI, SWLSMean, color = HDICategory)) + 
@@ -432,7 +455,6 @@ cor(tidydata18_67$HDI, tidydata18_67$SWLSMean, method = "pearson", use = "na.or.
 SWLSHDICat <- tidydata18_67[ ,c("HDICategory", "SWLSMean")]
 SWLSHDICat <- setNames(aggregate(SWLSHDICat[ ,2], list(HDICategory=SWLSHDICat$HDICategory), mean), 
                        c("HDICategory", "SWLSMean"))
-
 ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean, 
                        fill = HDICategory)) + 
     geom_bar(stat = "identity", width = 0.5) + 
@@ -445,7 +467,6 @@ ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean,
 The scatterplot data showed very little correlation when comparing HDI with the SWLS mean data.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those living in more highly developed nations do have a slightly higher satisfaction with life.
 
 ## Spatial Analysis
-
 ```{r, ECHO = TRUE}
 #Importing map.world data into environment to circumvent knitr's issues about environmental datasets
 localmap.world<-read.csv("~/6306DoingDataScience/6306CaseStudy2/Data/map.world.csv", header=TRUE)
@@ -538,7 +559,17 @@ swlsmap
 ![HDI Development](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Presentation/HDI_Graphic.PNG "HDI")
 
 # Summary & Conclusions
+* What is the mean AIP, GP, SWLS, and DP for each country?
+    * The range of the top 15 for AIP is (3.6(Poland) - 3.222(Belgium)) 
+    * The range of the top 15 for GP is (3.79(Poland) = 3.44(Hong Kong))
+* What is the HDI for each country?
+    * The range for HDI .949(Normay) - .352(Central African Republic)
+* Are there any relationships between the procrastination indices and HDI?
+    * 12 of the top 15 nations for GP Mean and 13 of the top 15 nations for AIP mean were categorized as having very high human development
+    * 77% of the population of both top-15 lists come from European nations
+    * While the numerical SWLS and HDI data did not correlate, when binning SWLS mean data among the four levels of human development, the countries with very high human development score a point higher than countries with low human development for SWLS mean (3.04 compared to 2.07)
 
 ## Additional Research
+* What demographic relationships exist with procrastination?
 
 ## What's Next?

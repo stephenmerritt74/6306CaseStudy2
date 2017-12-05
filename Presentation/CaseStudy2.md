@@ -18,7 +18,6 @@ Fundamentally, this study will seek to answer the following questions:
 
 * What is the mean AIP, GP, SWLS, and DP for each country?
 * What is the HDI for each country?
-* What demographic relationships exist with procrastination?
 * Are there any relationships between the procrastination indices and HDI?
 
 International businesses must find locations with the greatest productivity to ensure they minimize these costs on their pocket-book.  Several indices exist to track procrastination, which is correlated strongly with anxiety, unhappiness, and lack of access to resources.  Using commonly available data we can show which countries have high rates of procrastination and attempt to point clients towards regions of the world with lower procrastination rates but also abundant resources.
@@ -71,75 +70,8 @@ The original data provided in procrastination.csv was gathered from a survey wit
 #Data Ingest and initialization
 rawdata<-read.csv("~/6306DoingDataScience/6306CaseStudy2/Data/Procrastination.csv", header=TRUE)
 
-str(rawdata)
-```
+#str(rawdata)
 
-```
-## 'data.frame':	4264 obs. of  61 variables:
-##  $ Age                                                                                                                     : num  67.5 45 19 37.5 28 23 67.5 37.5 24 45 ...
-##  $ Gender                                                                                                                  : Factor w/ 3 levels "","Female","Male": 3 3 2 3 2 2 2 3 2 3 ...
-##  $ Kids                                                                                                                    : Factor w/ 3 levels "","No Kids","Yes Kids": 3 3 2 3 2 2 2 2 2 3 ...
-##  $ Edu                                                                                                                     : Factor w/ 9 levels "","deg","dip",..: 8 2 3 8 2 2 8 4 8 8 ...
-##  $ Work.Status                                                                                                             : Factor w/ 7 levels "","0","full-time",..: 5 4 6 3 3 3 4 4 3 3 ...
-##  $ Annual.Income                                                                                                           : int  25000 35000 NA 45000 35000 15000 NA 10000 250000 87500 ...
-##  $ Current.Occupation                                                                                                      : Factor w/ 676 levels ""," Accountant",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ How.long.have.you.held.this.position...Years                                                                            : num  9.0 1.5e-19 0.0 1.4e+01 1.0 ...
-##  $ How.long.have.you.held.this.position...Months                                                                           : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Community.size                                                                                                          : Factor w/ 10 levels "","0","8","Large Town",..: 5 10 4 4 10 9 4 10 10 10 ...
-##  $ Country.of.residence                                                                                                    : Factor w/ 94 levels "","0","Afghanistan",..: 31 15 25 26 26 26 60 88 88 73 ...
-##  $ Marital.Status                                                                                                          : Factor w/ 7 levels "","0","Divorced",..: 3 4 6 4 6 6 3 6 6 4 ...
-##  $ Number.of.sons                                                                                                          : Factor w/ 9 levels "","0","10","3",..: 2 9 2 2 2 2 2 2 2 8 ...
-##  $ Number.of.daughters                                                                                                     : int  5 1 0 1 0 0 0 0 0 0 ...
-##  $ X.DP.1..I.waste.a.lot.of.time.on.trivial.matters.before.getting.to.the.final.decisions                                  : int  3 3 5 3 3 3 3 4 2 5 ...
-##  $ X.DP.2..Even.after.I.make.a.decision.I.delay.acting.upon.it                                                             : int  1 4 5 3 3 4 4 3 2 5 ...
-##  $ X.DP.3..I.don.t.make.decisions.unless.I.really.have.to                                                                  : int  1 3 2 3 2 3 3 4 4 5 ...
-##  $ X.DP.4..I.delay.making.decisions.until.it.s.too.late                                                                    : int  1 3 3 3 1 2 2 4 4 5 ...
-##  $ X.DP.5..I.put.off.making.decisions.until.it.s.too.late                                                                  : int  1 3 3 3 1 2 2 3 4 5 ...
-##  $ X.AIP.1..I.pay.my.bills.on.time                                                                                         : int  1 3 5 2 1 2 3 4 3 3 ...
-##  $ X.AIP.2.I.am.prompt.and.on.time.for.most.appointments.                                                                  : int  1 1 4 1 1 5 1 4 3 3 ...
-##  $ X.AIP.3.I.lay.out.my.clothes.the.night.before.I.have.an.important.appointment..so.I.won.t.be.late                       : int  1 4 4 4 3 5 1 4 3 5 ...
-##  $ X.AIP.4..I.find.myself.running.later.than.I.would.like.to.be                                                            : int  1 3 5 3 3 5 2 4 4 3 ...
-##  $ X.AIP.5..I.don.t.get.things.done.on.time                                                                                : int  1 3 5 5 2 5 3 4 4 5 ...
-##  $ X.AIP.6..If.someone.were.teaching.a.course.on.how.to.get.things.done.on.time..I.would.attend                            : int  1 4 5 3 2 3 3 2 2 1 ...
-##  $ X.AIP.7..My.friends.and.family.think.I.wait.until.the.last.minute.                                                      : int  1 3 5 4 2 5 1 5 2 5 ...
-##  $ X.AIP.8..I.get.important.things.done.with.time.to.spare                                                                 : int  1 3 4 5 2 4 4 2 4 5 ...
-##  $ X.AIP.9..I.am.not.very.good.at.meeting.deadlines                                                                        : int  5 3 5 4 1 4 5 4 2 5 ...
-##  $ X.AIP.10..I.find.myself.running.out.of.time.                                                                            : int  1 3 5 5 1 5 5 3 2 5 ...
-##  $ X.AIP.11..I.schedule.doctor.s.appointments.when.I.am.supposed.to.without.delay                                          : int  1 4 4 4 2 3 3 2 4 4 ...
-##  $ X.AIP.12..I.am.more.punctual.than.most.people.I.know                                                                    : int  1 2 3 3 1 5 2 4 4 4 ...
-##  $ X.AIP.13..I.do.routine.maintenance..e.g...changing.the.car.oil..on.things.I.own.as.often.as.I.should                    : int  1 2 5 4 2 4 3 3 4 4 ...
-##  $ X.AIP.14.When.I.have.to.be.somewhere.at.a.certain.time.my.friends.expect.me.to.run.a.bit.late                           : int  1 2 4 2 1 5 1 4 3 4 ...
-##  $ X.AIP.15.Putting.things.off.till.the.last.minute.has.cost.me.money.in.the.past                                          : int  3 4 3 1 2 5 4 5 3 5 ...
-##  $ X.GP.1.I.often.find.myself.performing.tasks.that.I.had.intended.to.do.days.before                                       : int  1 4 5 4 4 5 4 5 3 5 ...
-##  $ X.GP2..I.often.miss.concerts..sporting.events..or.the.like.because.I.don.t.get.around.to.buying.tickets.on.time         : int  1 2 2 1 1 5 1 1 4 3 ...
-##  $ X.GP.3..When.planning.a.party..I.make.the.necessary.arrangements.well.in.advance                                        : int  1 2 2 3 2 2 1 3 3 3 ...
-##  $ X.GP.4..When.it.is.time.to.get.up.in.the.morning..I.most.often.get.right.out.of.bed                                     : int  1 2 4 3 4 5 1 4 4 1 ...
-##  $ X.GP.5..A.letter.may.sit.for.days.after.I.write.it.before.mailing.it.possible                                           : int  1 2 3 2 5 4 1 3 2 5 ...
-##  $ X.GP.6..I.generally.return.phone.calls.promptly                                                                         : int  1 2 1 3 2 4 2 3 2 5 ...
-##  $ X.GP.7..Even.jobs.that.require.little.else.except.sitting.down.and.doing.them..I.find.that.they.seldom.get.done.for.days: int  1 4 3 4 4 5 3 4 4 5 ...
-##  $ X.GP.8..I.usually.make.decisions.as.soon.as.possible                                                                    : int  1 2 2 5 2 4 2 3 2 4 ...
-##  $ X.GP.9..I.generally.delay.before.starting.on.work.I.have.to.do                                                          : int  1 4 5 4 4 4 4 4 4 5 ...
-##  $ X.GP.10..When.traveling..I.usually.have.to.rush.in.preparing.to.arrive.at.the.airport.or.station.at.the.appropriate.time: int  1 2 4 1 1 3 1 4 1 3 ...
-##  $ X.GP.11..When.preparing.to.go.out..I.am.seldom.caught.having.to.do.something.at.the.last.minute                         : int  5 3 5 3 2 4 4 3 5 5 ...
-##  $ X.GP.12..In.preparation.for.some.deadlines..I.often.waste.time.by.doing.other.things                                    : int  1 4 5 4 3 4 2 5 2 5 ...
-##  $ X.GP.13..If.a.bill.for.a.small.amount.comes..I.pay.it.right.away                                                        : int  1 2 3 3 2 3 3 2 3 4 ...
-##  $ X.GP.14..I.usually.return.a..RSVP..request.very.shortly.after.receiving.it                                              : int  1 2 4 3 4 4 2 2 2 4 ...
-##  $ X.GP.15..I.often.have.a.task.finished.sooner.than.necessary                                                             : int  1 3 5 4 3 4 4 4 1 4 ...
-##  $ X.GP.16..I.always.seem.to.end.up.shopping.for.birthday.gifts.at.the.last.minute                                         : int  1 4 2 4 2 4 3 4 5 5 ...
-##  $ X.GP.17..I.usually.buy.even.an.essential.item.at.the.last.minute                                                        : int  1 3 3 3 3 4 1 3 5 3 ...
-##  $ X.GP.18..I.usually.accomplish.all.the.things.I.plan.to.do.in.a.day                                                      : int  5 3 5 4 2 4 4 4 1 5 ...
-##  $ X.GP.19..I.am.continually.saying..I.ll.do.it.tomorrow.                                                                  : int  1 4 5 5 3 4 4 4 1 5 ...
-##  $ X.GP.20..I.usually.take.care.of.all.the.tasks.I.have.to.do.before.I.settle.down.and.relax.for.the.evening               : int  5 4 4 1 4 4 2 4 3 5 ...
-##  $ X.SWLS.1..In.most.ways.my.life.is.close.to.my.ideal                                                                     : int  5 3 2 2 4 3 3 3 4 1 ...
-##  $ X.SWLS.2.The.conditions.of.my.life.are.excellent                                                                        : int  5 4 2 4 4 2 4 3 4 4 ...
-##  $ X.SWLS.3..I.am.satisfied.with.my.life.                                                                                  : int  5 4 2 2 4 4 3 3 5 2 ...
-##  $ X.SWLS.4..So.far.I.have.gotten.the.important.things.I.want.in.life                                                      : int  5 4 3 2 3 4 3 2 4 4 ...
-##  $ X.SWLS.5..If.I.could.live.my.life.over..I.would.change.almost.nothing                                                   : int  5 3 4 2 4 3 2 3 4 1 ...
-##  $ Do.you.consider.yourself.a.procrastinator.                                                                              : Factor w/ 3 levels "","no","yes": 2 3 3 3 2 3 3 3 2 3 ...
-##  $ Do.others.consider.you.a.procrastinator.                                                                                : Factor w/ 5 levels "","0","4","no",..: 4 5 5 5 4 5 5 5 4 5 ...
-```
-
-```r
 #2a. Output Rows and Columns
 nrow(rawdata)
 ```
@@ -164,135 +96,8 @@ At first glance we see a dataframe sctructure of 4264 observations with 61 separ
 ```r
 #Diagnostic outputs to generate the number of NA's
 NATidy<-sapply(rawdata, function(y) sum(length(which(is.na(y)))))
-NATidy
-```
+#NATidy
 
-```
-##                                                                                                                      Age 
-##                                                                                                                       71 
-##                                                                                                                   Gender 
-##                                                                                                                        0 
-##                                                                                                                     Kids 
-##                                                                                                                        0 
-##                                                                                                                      Edu 
-##                                                                                                                        0 
-##                                                                                                              Work.Status 
-##                                                                                                                        0 
-##                                                                                                            Annual.Income 
-##                                                                                                                      548 
-##                                                                                                       Current.Occupation 
-##                                                                                                                        0 
-##                                                                             How.long.have.you.held.this.position...Years 
-##                                                                                                                       94 
-##                                                                            How.long.have.you.held.this.position...Months 
-##                                                                                                                        6 
-##                                                                                                           Community.size 
-##                                                                                                                        0 
-##                                                                                                     Country.of.residence 
-##                                                                                                                        0 
-##                                                                                                           Marital.Status 
-##                                                                                                                        0 
-##                                                                                                           Number.of.sons 
-##                                                                                                                        0 
-##                                                                                                      Number.of.daughters 
-##                                                                                                                        4 
-##                                   X.DP.1..I.waste.a.lot.of.time.on.trivial.matters.before.getting.to.the.final.decisions 
-##                                                                                                                        0 
-##                                                              X.DP.2..Even.after.I.make.a.decision.I.delay.acting.upon.it 
-##                                                                                                                        0 
-##                                                                   X.DP.3..I.don.t.make.decisions.unless.I.really.have.to 
-##                                                                                                                        0 
-##                                                                     X.DP.4..I.delay.making.decisions.until.it.s.too.late 
-##                                                                                                                        0 
-##                                                                   X.DP.5..I.put.off.making.decisions.until.it.s.too.late 
-##                                                                                                                        0 
-##                                                                                          X.AIP.1..I.pay.my.bills.on.time 
-##                                                                                                                        0 
-##                                                                   X.AIP.2.I.am.prompt.and.on.time.for.most.appointments. 
-##                                                                                                                        0 
-##                        X.AIP.3.I.lay.out.my.clothes.the.night.before.I.have.an.important.appointment..so.I.won.t.be.late 
-##                                                                                                                        0 
-##                                                             X.AIP.4..I.find.myself.running.later.than.I.would.like.to.be 
-##                                                                                                                        0 
-##                                                                                 X.AIP.5..I.don.t.get.things.done.on.time 
-##                                                                                                                        0 
-##                             X.AIP.6..If.someone.were.teaching.a.course.on.how.to.get.things.done.on.time..I.would.attend 
-##                                                                                                                        0 
-##                                                       X.AIP.7..My.friends.and.family.think.I.wait.until.the.last.minute. 
-##                                                                                                                        0 
-##                                                                  X.AIP.8..I.get.important.things.done.with.time.to.spare 
-##                                                                                                                        0 
-##                                                                         X.AIP.9..I.am.not.very.good.at.meeting.deadlines 
-##                                                                                                                        0 
-##                                                                             X.AIP.10..I.find.myself.running.out.of.time. 
-##                                                                                                                        0 
-##                                           X.AIP.11..I.schedule.doctor.s.appointments.when.I.am.supposed.to.without.delay 
-##                                                                                                                        0 
-##                                                                     X.AIP.12..I.am.more.punctual.than.most.people.I.know 
-##                                                                                                                        0 
-##                     X.AIP.13..I.do.routine.maintenance..e.g...changing.the.car.oil..on.things.I.own.as.often.as.I.should 
-##                                                                                                                        0 
-##                            X.AIP.14.When.I.have.to.be.somewhere.at.a.certain.time.my.friends.expect.me.to.run.a.bit.late 
-##                                                                                                                        0 
-##                                           X.AIP.15.Putting.things.off.till.the.last.minute.has.cost.me.money.in.the.past 
-##                                                                                                                        0 
-##                                        X.GP.1.I.often.find.myself.performing.tasks.that.I.had.intended.to.do.days.before 
-##                                                                                                                        0 
-##          X.GP2..I.often.miss.concerts..sporting.events..or.the.like.because.I.don.t.get.around.to.buying.tickets.on.time 
-##                                                                                                                        0 
-##                                         X.GP.3..When.planning.a.party..I.make.the.necessary.arrangements.well.in.advance 
-##                                                                                                                        0 
-##                                      X.GP.4..When.it.is.time.to.get.up.in.the.morning..I.most.often.get.right.out.of.bed 
-##                                                                                                                        0 
-##                                            X.GP.5..A.letter.may.sit.for.days.after.I.write.it.before.mailing.it.possible 
-##                                                                                                                        0 
-##                                                                          X.GP.6..I.generally.return.phone.calls.promptly 
-##                                                                                                                        0 
-## X.GP.7..Even.jobs.that.require.little.else.except.sitting.down.and.doing.them..I.find.that.they.seldom.get.done.for.days 
-##                                                                                                                        0 
-##                                                                     X.GP.8..I.usually.make.decisions.as.soon.as.possible 
-##                                                                                                                        0 
-##                                                           X.GP.9..I.generally.delay.before.starting.on.work.I.have.to.do 
-##                                                                                                                        0 
-## X.GP.10..When.traveling..I.usually.have.to.rush.in.preparing.to.arrive.at.the.airport.or.station.at.the.appropriate.time 
-##                                                                                                                        0 
-##                          X.GP.11..When.preparing.to.go.out..I.am.seldom.caught.having.to.do.something.at.the.last.minute 
-##                                                                                                                        0 
-##                                     X.GP.12..In.preparation.for.some.deadlines..I.often.waste.time.by.doing.other.things 
-##                                                                                                                        0 
-##                                                         X.GP.13..If.a.bill.for.a.small.amount.comes..I.pay.it.right.away 
-##                                                                                                                        0 
-##                                               X.GP.14..I.usually.return.a..RSVP..request.very.shortly.after.receiving.it 
-##                                                                                                                        0 
-##                                                              X.GP.15..I.often.have.a.task.finished.sooner.than.necessary 
-##                                                                                                                        0 
-##                                          X.GP.16..I.always.seem.to.end.up.shopping.for.birthday.gifts.at.the.last.minute 
-##                                                                                                                        0 
-##                                                         X.GP.17..I.usually.buy.even.an.essential.item.at.the.last.minute 
-##                                                                                                                        0 
-##                                                       X.GP.18..I.usually.accomplish.all.the.things.I.plan.to.do.in.a.day 
-##                                                                                                                        0 
-##                                                                   X.GP.19..I.am.continually.saying..I.ll.do.it.tomorrow. 
-##                                                                                                                        0 
-##                X.GP.20..I.usually.take.care.of.all.the.tasks.I.have.to.do.before.I.settle.down.and.relax.for.the.evening 
-##                                                                                                                        0 
-##                                                                      X.SWLS.1..In.most.ways.my.life.is.close.to.my.ideal 
-##                                                                                                                        0 
-##                                                                         X.SWLS.2.The.conditions.of.my.life.are.excellent 
-##                                                                                                                        0 
-##                                                                                   X.SWLS.3..I.am.satisfied.with.my.life. 
-##                                                                                                                        0 
-##                                                       X.SWLS.4..So.far.I.have.gotten.the.important.things.I.want.in.life 
-##                                                                                                                        0 
-##                                                    X.SWLS.5..If.I.could.live.my.life.over..I.would.change.almost.nothing 
-##                                                                                                                        0 
-##                                                                               Do.you.consider.yourself.a.procrastinator. 
-##                                                                                                                        0 
-##                                                                                 Do.others.consider.you.a.procrastinator. 
-##                                                                                                                        0
-```
-
-```r
 #Diagnostic outputs to generate the number of Blank string fields
 BlankTidy<-sapply(rawdata, function(y) table(as.character(y)=="")["TRUE"])
 BlankTidy<-BlankTidy[c("Gender.TRUE", "Kids.TRUE", "Edu.TRUE", "Work.Status.TRUE", "Current.Occupation.TRUE", "Community.size.TRUE", "Country.of.residence.TRUE", "Marital.Status.TRUE")]
@@ -321,7 +126,7 @@ char<-c("Gender", "Kids", "Education", "WorkStatus", "Occupation", "CommSize", "
 tidydata[char] <- sapply(tidydata[char], as.character) #All columns in char are converted to character fields.
 ```
 
-The ridiculous nonsensical or overdescriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the github repository.
+The nonsensical or overdescriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the github repository.
 
 
 ```r
@@ -499,6 +304,8 @@ kable(tidydata1[1:5, c(1:3,9,64:67)], format = "markdown",
 write.csv(tidydata1, "tidydataHDI.csv")
 ```
 
+Scraping the data from [Wikipedia](https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries) presented a unique challenge to determine which of the multiple HTML tables contained the appropriate HDI data.  HTML tables 4,5,7,8,10,11,13, and 14 contained the desired data, necessitating a loop to ensure data set integrity.  The output was not clean, with the country data coming in 2 separate columns that were offset from one another and with different column names.  Ultimately, it was necessary to create a separate dataset containing only the country column, and then combine that data with the original HDI data and subset the columns appropriately.  The resulting HumanDevelopmentIndex.csv contains HDI and HDI level data for 189 distinct countries.  This data is ulitmately combined with the tidy data from the survey for further analysis.
+
 # Analysis
 
 ## Statistical Analysis
@@ -525,6 +332,13 @@ funcsummary <- function(x, property){
           caption = paste0("Summary Statisitics for ", property, sep = " "))
    
 }
+```
+
+After considering the available range of ages that could be examined with the survey results, we decided to keep all data for men and women between ages 18 and 67.5.  According to recent world [retirement](http://chartsbin.com/view/2466) age data, this subset selection appeared most appropriate.  The next lowest age cutoff would have been at 55, which would have eliminated a significant amount of the population.
+
+### Summary Statistics for Age
+
+```r
 funcsummary(tidydata18_67, "Age")
 ```
 
@@ -533,6 +347,7 @@ funcsummary(tidydata18_67, "Age")
 | Median| IQR|   Mean|     SD| Min| Max| Range|
 |------:|---:|------:|------:|---:|---:|-----:|
 |     37|  17| 37.863| 13.298|  19|  67|    48|
+### Summary Statistics for Annual Income
 
 ```r
 funcsummary(tidydata18_67, "AnnIncome")
@@ -543,6 +358,7 @@ funcsummary(tidydata18_67, "AnnIncome")
 | Median|   IQR|     Mean|       SD|   Min|    Max|  Range|
 |------:|-----:|--------:|--------:|-----:|------:|------:|
 |  45000| 72500| 59731.65| 55174.79| 10000| 250000| 240000|
+### Summary Statistics for HDI
 
 ```r
 funcsummary(tidydata18_67, "HDI")
@@ -553,6 +369,7 @@ funcsummary(tidydata18_67, "HDI")
 | Median| IQR|  Mean|    SD|   Min|   Max| Range|
 |------:|---:|-----:|-----:|-----:|-----:|-----:|
 |   0.92|   0| 0.905| 0.056| 0.479| 0.949|  0.47|
+### Summary Statistics for DP Mean
 
 ```r
 funcsummary(tidydata18_67, "DPMean")
@@ -563,6 +380,7 @@ funcsummary(tidydata18_67, "DPMean")
 | Median| IQR|  Mean|    SD| Min| Max| Range|
 |------:|---:|-----:|-----:|---:|---:|-----:|
 |      3| 1.4| 3.053| 0.969|   1|   5|     4|
+### Summary Statistics for AIP Mean
 
 ```r
 funcsummary(tidydata18_67, "AIPMean")
@@ -573,6 +391,7 @@ funcsummary(tidydata18_67, "AIPMean")
 | Median| IQR|  Mean|    SD| Min| Max| Range|
 |------:|---:|-----:|-----:|---:|---:|-----:|
 |      3|   2| 2.972| 0.854|   1|   5|     4|
+### Summary Statistics for GP Mean
 
 ```r
 funcsummary(tidydata18_67, "GPMean")
@@ -583,6 +402,7 @@ funcsummary(tidydata18_67, "GPMean")
 | Median|  IQR|  Mean|    SD| Min| Max| Range|
 |------:|----:|-----:|-----:|---:|---:|-----:|
 |   3.25| 0.95| 3.243| 0.688|   1|   5|     4|
+### Summary Statistics for SWLS
 
 ```r
 funcsummary(tidydata18_67, "SWLSMean")
@@ -594,6 +414,7 @@ funcsummary(tidydata18_67, "SWLSMean")
 |------:|---:|-----:|-----:|---:|---:|-----:|
 |      3| 1.4| 3.043| 0.972|   1|   5|     4|
 
+## Annual Income and GP Mean Histograms
 
 ```r
 # 4b (cont.) Created a histogram for both Annual Income and General Procrastination Scale Mean
@@ -601,17 +422,16 @@ hist(tidydata18_67$AnnIncome, col = "blue3", main = "Histogram of Annual Income"
      xlab = "Annual Income in USD")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 ```r
 hist(tidydata18_67$GPMean, col = "blue3", main = "Histogram of the General Procrastination Mean",
      xlab = "Mean of General Procastation Scale")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-9-2.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-16-2.png)<!-- -->
 
-### Histograms
-The income histogram is right skewed with the vast majority of the Income being at or below $50,000 per year.  The general procrastination historgram is left skewed with the majority of mean GP scores being 3 or above.
+When reviewing annual income data in a histogram, we find that it is right skewed with the vast majority of the responses being at or below $50,000 per year.  The GP mean historgram is left skewed with the majority of mean GP scores being 3 or above.
 
 
 ```r
@@ -896,9 +716,9 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 |TRUE    |  2828|
 
 ### EDA Results
-The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified themselves as "assistants".  57% of the respondents were women and 70% of respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
+The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  51 of the 84 countries represented with responses had under 5 total responses.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified as "assistants".  57% of the respondents were women and 70% of the respondents perceptions of their own propensity to procrastinate or not porcrastinate matched the perceptions of others.  
 
-## Deeper Analysis and Visualization
+## Top Fifteen Nations for AIP and GP (minimum 5 responses)
 
 ```r
 #5b Create a barchart for the top 15 nations in average pro
@@ -922,7 +742,7 @@ ggplot(topfifteen, aes(x = reorder(Country, GPMean), y = GPMean,
     scale_fill_brewer(palette = "Dark2")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 ```r
 #6c Table of topfifteen nations for General Procrastiantion Mean
@@ -949,9 +769,9 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General P
 |29 |Finland      | 3.450000| 0.895|    12|Very high human development |
 |35 |Hong Kong    | 3.442857| 0.917|     7|Very high human development |
 
-
-
 ```r
+write.csv(topfifteen, "~/6306DoingDataScience/6306CaseStudy2/Data/top15GP.csv", row.names = FALSE)
+
 #5c Generating Visualization of AIP by HDI
 topfifteen <- tidydata18_67[,c("Country", "AIPMean", "HDI")]
 topfifteen <- setNames(aggregate(topfifteen[ ,2:3], list(Country=topfifteen$Country), mean), 
@@ -973,10 +793,11 @@ ggplot(topfifteen, aes(x = reorder(Country, AIPMean), y = AIPMean,
   scale_fill_brewer(palette = "Dark2")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-18-2.png)<!-- -->
 
 ```r
-kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General Procrastination (AIP) Mean")
+#6c Table of topfifteen nations for AIP Mean
+kable(topfifteen, format = "markdown", caption = "Top 15 Countries for Adult Inventory Procrastination (AIP) Mean")
 ```
 
 
@@ -999,7 +820,11 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for General P
 |73 |Spain       | 3.230769| 0.884|    13|Very high human development |
 |12 |Belgium     | 3.222222| 0.896|     9|Very high human development |
 
-When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We dediced to set a new threshold of requiring at least five respondents to be considered in the top-15 list.  This caused a drastics change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.
+```r
+write.csv(topfifteen, "~/6306DoingDataScience/6306CaseStudy2/Data/top15AIP.csv", row.names = FALSE)
+```
+
+When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We dediced to set a new threshold, requiring at least five respondents to be considered in the top-15 list.  This caused a drastic change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.  European nations dominated both top-15 lists, with European nations owning the top seven spots for GP, and top three spots for AIP.  European nations comprised 23 of the 30 spots on both top-15 lists (~77%)
 
 
 ```r
@@ -1011,7 +836,7 @@ ggplot(na.omit(tidydata18_67), aes(Age, AnnIncome, color = Gender)) +
   ggtitle("Age vs. Annual Income by Gender") + labs(x = "Age", y = "AnnIncome")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 ```r
 cor(tidydata18_67$AnnIncome, tidydata18_67$Age, method = "pearson", use="na.or.complete")
@@ -1049,9 +874,7 @@ summary(AgeIncome)
 ## F-statistic: 546.7 on 1 and 3598 DF,  p-value: < 2.2e-16
 ```
 
-
-
-
+## HDI vs. SWLS comparison
 
 ```r
 #5e Determine if there is a relationship between Human Development and Satisfaction With Life
@@ -1069,7 +892,7 @@ ggplot(tidydata18_67, aes(HDI, SWLSMean, color = HDICategory)) +
 ## Warning: Removed 160 rows containing missing values (geom_point).
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
 
 ```r
 cor(tidydata18_67$HDI, tidydata18_67$SWLSMean, method = "pearson", use = "na.or.complete")
@@ -1083,7 +906,6 @@ cor(tidydata18_67$HDI, tidydata18_67$SWLSMean, method = "pearson", use = "na.or.
 SWLSHDICat <- tidydata18_67[ ,c("HDICategory", "SWLSMean")]
 SWLSHDICat <- setNames(aggregate(SWLSHDICat[ ,2], list(HDICategory=SWLSHDICat$HDICategory), mean), 
                        c("HDICategory", "SWLSMean"))
-
 ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean, 
                        fill = HDICategory)) + 
     geom_bar(stat = "identity", width = 0.5) + 
@@ -1093,12 +915,11 @@ ggplot(SWLSHDICat, aes(x = reorder(HDICategory, SWLSMean), y = SWLSMean,
     scale_fill_brewer(palette = "Dark2")
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-14-2.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-20-2.png)<!-- -->
 
 The scatterplot data showed very little correlation when comparing HDI with the SWLS mean data.  The correlation coefficient was a miniscule positive 0.04.  The barchart demonstrates that when grouped by levels of Human Development, on average those living in more highly developed nations do have a slightly higher satisfaction with life.
 
 ## Spatial Analysis
-
 
 ```r
 #Importing map.world data into environment to circumvent knitr's issues about environmental datasets
@@ -1178,33 +999,43 @@ swlsmap<- ggplot(mapdata, aes(map_id=Country))+    #sets the data and the primar
 aipmap 
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
 
 
 ```r
 gpmap
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
 
 ```r
 dpmap
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
 
 
 ```r
 swlsmap
 ```
 
-![](CaseStudy2_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+![](CaseStudy2_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
 
 ![HDI Development](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Presentation/HDI_Graphic.PNG "HDI")
 
 # Summary & Conclusions
+* What is the mean AIP, GP, SWLS, and DP for each country?
+    * The range of the top 15 for AIP is (3.6(Poland) - 3.222(Belgium)) 
+    * The range of the top 15 for GP is (3.79(Poland) = 3.44(Hong Kong))
+* What is the HDI for each country?
+    * The range for HDI .949(Normay) - .352(Central African Republic)
+* Are there any relationships between the procrastination indices and HDI?
+    * 12 of the top 15 nations for GP Mean and 13 of the top 15 nations for AIP mean were categorized as having very high human development
+    * 77% of the population of both top-15 lists come from European nations
+    * While the numerical SWLS and HDI data did not correlate, when binning SWLS mean data among the four levels of human development, the countries with very high human development score a point higher than countries with low human development for SWLS mean (3.04 compared to 2.07)
 
 ## Additional Research
+* What demographic relationships exist with procrastination?
 
 ## What's Next?
