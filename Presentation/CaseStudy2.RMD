@@ -576,7 +576,10 @@ swlsmap
 
 Satisfaction of life survey responses ask questions to determine overall global life satisfaction.  The Pacific countries of South America appear the most content along with Algeria, Pakistan and Iran.  Many European countries appear lower in the scale along with Russia and China.
 
-![HDI Development](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Presentation/HDI_Graphic.PNG "HDI")
+![HDI Development](https://i.pinimg.com/736x/03/ee/82/03ee82a37b06aa6760259d79ac4d8997--human-development-report-economic-development.jpg)
+HDI, or Human Development Index is a multivariate statistic created by the United Nations to measure the development levels of countries.  It takes into account overall health, education, accessability of housing and food, and other factors.  The number falls between 0 and 1 with the higher numbers indicating most developed.  The map clearly shows that most countries considered "1st World" nations are highly developed while traditional "3rd world countries" fall on the lower end of the spectrum.  Of particular note are the moderately low HDI scores of southern Asia.  India, Pakistan, and others who are not seen as 3rd world countries have significantly lower HDI scores than even their nearby neighbors such as China.  War-torn nations such as Afghanistan and Somalia contain no HDI indicies.  Western Sahara also contains no data, probably due to the contentious standoff between the government of Morocco and the Sahrawi Arab Democratic Republic.
+
+(Image source is Pinterest.  Author is [Happenstance](https://commons.wikimedia.org/wiki/User_talk:Happenstance))
 
 # Summary & Conclusions
 * What is the mean AIP, GP, SWLS, and DP for each country?
