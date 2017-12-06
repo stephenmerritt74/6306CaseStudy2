@@ -13,7 +13,7 @@ The study described in this proposal seeks to analyze procrastination and develo
 
 # Introduction
 ---
-[Recent reports](https://www.cnbc.com/id/46750183) state that the average cost of procrastination to businesses stands at an estimated $10,396 per employee per year.  As the world economy recovers from the recession, businesses the globe over are moving to open locations in exploding markets to gain access to valuable resources and assets to expand their reach.  Many of these hot regions exist in developing regions that are underserved by their governments.  Procrastination is known to be highly correlated with anxiety and access to necessary quality of life components such as food and housing.   Of particular interest to any business seeking to expand globally should be the levels of procrastination and the relationship to various developmental indices.  After all, a productive worker is a happy worker and a happy worker stays highly engaged over the course the work period reducing overheard cost to business!
+[Recent reports](https://www.cnbc.com/id/46750183) state that the average cost of procrastination to businesses stands at an estimated $10,396 per employee per year.  As the world economy recovers from the recession, businesses the globe over are moving to open locations in exploding markets to gain access to valuable resources and assets to expand their reach.  Many of these hot regions exist in developing regions that are underserved by their governments.  Procrastination is known to be highly correlated with anxiety and access to necessary quality of life components such as food and housing.   Of particular interest to any business seeking to expand globally should be the levels of procrastination and the relationship to various developmental indices.  After all, a productive worker is a happy worker, and a happy worker stays highly engaged over the course of the work period reducing overheard cost to business!
 
 Businesses requesting this analysis will be treated to a study of the spatial relationships and distributions of procrastination and human development.  This analysis will look at how procrastination rates and development patterns are distributed across the globe and look at the spatial distributions of the various procrastination scale average for participating countries and human development. The spatial interpretation of data will inform readers of hot spots of high and low procrastination rates.
 
@@ -58,7 +58,7 @@ The Human Development Index (HDI) data comes from [Wikipedia](https://en.wikiped
 
 ## Data Integrity
 ---
-The original data provided in procrastination.csv was gathered from a survey with multiple open text fields.  Additionally, due to desired anonymity only the procrastination responses were mandatory fields.  As such, the condition of the data necessitates quote a bit of cleaning in order to perform any analysis work and provide clear and useful analysis.
+The original data provided in procrastination.csv was gathered from a survey with multiple open text fields.  Additionally, due to desired anonymity only the procrastination responses were mandatory fields.  As such, the condition of the data necessitates quite a bit of cleaning in order to perform any clear and useful analysis.
 
 ```{r, echo=TRUE}
 #Evaluate data types of variables
@@ -72,9 +72,9 @@ nrow(rawdata)
 ncol(rawdata)
 ```
 
-The first step in tidying any data is to look at the data and figure out what is present and then evaluate what transformations needs to occur to make the data useful.
+The first step in tidying any data is to look at the data, figure out what is present, and then evaluate what transformations need to occur to make the data useful.
 
-At first glance we see a dataframe structure of 4264 observations with 61 separate variables.  These variables include 2 numeric, 12 factors, and 47 integer variables.  Many of the factors include NULL strings.  Some of the integer and numeric variables include NAs.  Both will affect analysis so it is important to understand how many of each are present in the data.
+At first glance, we see a dataframe structure of 4264 observations with 61 separate variables.  These variables include 2 numeric, 12 factor, and 47 integer variables.  Many of the factor variables include NULL strings.  Some of the integer and numeric variables include NAs.  Both will affect analysis so it is important to understand how many of each are present in the data.
 
 ```{r, echo=TRUE}
 #Diagnostic outputs to generate the number of NA's
@@ -110,7 +110,7 @@ char<-c("Gender", "Kids", "Education", "WorkStatus", "Occupation", "CommSize", "
 tidydata[char] <- sapply(tidydata[char], as.character) #All columns in char are converted to character fields.
 ```
 
-The nonsensical or over descriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the GitHub repository.
+The non-sensical or over descriptive column names are replaced with less cumbersome but still descriptive variable names.  For reference to the specific questions and to see which variables in the new data frame match the old variables, see the [codebook](https://github.com/stephenmerritt74/6306CaseStudy2/blob/master/Codebook.md) on the GitHub repository.
 
 ```{r, echo=TRUE}
 #2c-i.  Tenure (Years of service) are rounded to the nearest integer and then converted to integers.  Finally the 999 values are converted to NAs.
@@ -366,7 +366,11 @@ occ <- as.data.frame(count(tidydata18_67, 'Occupation'))
 occ$Occupation[which(occ$freq == 1)] <- "Other"
 occ <- as.data.frame(count(occ, 'Occupation'))
 kable(occ, format = "markdown", caption = "Frequency of Occupation Responses")
+```
 
+As discussed in the data tidying section, even following a significant cleanup of the occupation column, 500 unique occupations remained in the dataset.  Those occupations that received a count of 1 were combined into a separate category of "other", combining 374 unique entries.
+
+```{r, ECHO = TRUE}
 # 4d Determined the counts of participants per country
 ppc <- setNames(tally(group_by(tidydata18_67, Country), sort = TRUE), c("Country", "Count"))
 kable(ppc, format = "markdown", caption = "Frequency of Response per Country")
@@ -379,7 +383,7 @@ kable(match, format = "markdown", caption = "Number of Self Perception Matches")
 ```
 
 ### EDA Results
-The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  51 of the 84 countries represented with responses had under 5 total responses.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as occupation identified as "assistants".  57% of the respondents were women and 70% of the respondents perceptions of their own propensity to procrastinate or not procrastinate matched the perceptions of others.  
+The survey results indicate a bias towards Highly Developed Western nations with almost 80% of the respondents coming from the US, Canada, and the United Kingdom.  51 of the 84 countries represented with responses had under 5 total responses.  Of the people who chose to identify an occupation (there were 2644 non-responses for occupation), "educator"" was the most frequent survey occupation response (157).  The nearest competitor to "educator" as an occupation response was "assistant".  57% of the respondents were women and 70% of the respondents perceptions of their own propensity to procrastinate or not procrastinate matched the perceptions of others.  
 
 ## Top Fifteen Nations for AIP and GP (minimum 5 responses)
 ```{r, ECHO = TRUE}
@@ -431,7 +435,7 @@ kable(topfifteen, format = "markdown", caption = "Top 15 Countries for Adult Inv
 write.csv(topfifteen, "~/6306DoingDataScience/6306CaseStudy2/Data/top15AIP.csv", row.names = FALSE)
 ```
 
-When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We decided to set a new threshold, requiring at least five respondents to be considered in the top-15 list.  This caused a drastic change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.  European nations dominated both top-15 lists, with European nations owning the top seven spots for GP, and top three spots for AIP.  European nations comprised 23 of the 30 spots on both top-15 lists (~77%)
+When initially reviewing the data for GP and AIP, countries with only one respondent frequently appeared in the topfifteen dataframes.  We decided to set a new threshold, requiring a country to have at least five respondents before being considered in the top-15 list.  This caused a drastic change to the topfifteen dataframes for both AIP and GP, with the overall population dropping from 84 countries to 33.  Countries such as Myanmar, Sri Lanka, Qatar, Panama, Nicaragua, etc.... which only had one respondent were replaced with Greece, Romania, Norway, and Spain.  Countries that were removed from the topfifteen data frames that had more than one respondent were Austria, Malaysia, Uruguay, Ecuador and Colombia, which all had three or less respondents.  Following this threshold reset, European nations dominated both top-15 lists, with European nations owning the top seven spots for GP, and top three spots for AIP.  European nations comprised 23 of the 30 spots on both top-15 lists (~77%)
 
 A high AIP score strongly correlates to high development of a country.  There are no countries of low human development in the top 15 and only 1/5 of the respondents are of medium development.  Fully 1/3 of the top 15 are very highly developed.  Interestingly enough 1/3 of the top 15 in AIP are island nations.
 
